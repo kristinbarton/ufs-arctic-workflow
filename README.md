@@ -90,11 +90,11 @@ Directories:
 Generating Initial and Boundary Inputs
 -----------------------------------------------
 This will create both ocean and atmosphere inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Hera)](#accessing-existing-test-cases-hera))
-1. First, go the the `run` directory and edit `run_all_prep.sh` so that it points to the desired config directory found in `config_files` (or setup your own `config.in`).
-2. Run `./run_all_prep.py` from `run` directory to generate all inputs.
+1. First, go the the `run` directory and edit `run_prep.sh` so that it points to the desired config directory found in `config_files` (or setup your own `config.in`).
+2. Run `./run_prep.py` from `run` directory to generate all inputs.
 3. Output and configure files will be placed in a top-level directory called `intercom`. Place all `*.nc` files into `INPUT` in your run directory and place `MOM_input` into top level of run directory.
-4. Running `./clean.sh` or (on `dev_ursa` branch), running with the `--clean` (e.g., `./run_all_prep.py --clean --all`) will clean up the directory before running. This is recommended if you have old run data in the run directory.
-5. (Only on `dev_ursa` branch: You can specify specific components to generate boundary conditions for. By default `./run_all_prep.py` will generate files for atmosphere, ocean, and ice. To specify only one or two components, include `--ocn`, `--ice`, and/or `--atm` in the script call. You can also use `--all` to clarify input files should be generated for all components.
+4. Running `./clean.sh` or (on `dev_ursa` branch), running with the `--clean` (e.g., `./run_prep.py --clean --all`) will clean up the directory before running. This is recommended if you have old run data in the run directory.
+5. (Only on `dev_ursa` branch: You can specify specific components to generate boundary conditions for. By default `./run_prep.py` will generate files for atmosphere, ocean, and ice. To specify only one or two components, include `--ocn`, `--ice`, and/or `--atm` in the script call. You can also use `--all` to clarify input files should be generated for all components.
 
 Setting up initial working ATM OCN ICE configuration
 ----------------------------------------------------
@@ -184,8 +184,8 @@ Further discussion on setup can be found in the section on CICE below.
 Generating only MOM6 Initial and Boundary Inputs
 ------------------------------------------------
 This will create only the ocean inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Hera)](#accessing-existing-test-cases-hera))
-1. Go to the `ocn_prep` directory.
-2. Copy necessary MOM6 grid files into the `fix/` directory (on Hera: `/scratch4/BMC/gsienkf/Kristin.Barton/files/ufs_arctic_development/ocn_prep/fix`).
+1. Go to the `ocn` directory.
+2. Copy necessary MOM6 grid files into the `fix/` directory (on Hera: `/scratch4/BMC/gsienkf/Kristin.Barton/files/ufs_arctic_development/ocn/fix`).
 3. Check `run_init.sh` has the environment variables set.
 4. Run: `./run_init.sh`.
 5. Copy all `.nc` output files from `intercom/` to the `INPUT/` inside your model run directory.
@@ -194,7 +194,7 @@ This will create only the ocean inputs that can be placed into an existing run d
 Generating only FV3 Initial and Boundary Inputs
 ------------------------------------------
 This will create only the atmosphere inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Hera)](#accessing-existing-test-cases-hera))
-1. Go to the `atm_prep` directory.
+1. Go to the `atm` directory.
 2. Check `config.in` file for any necessary changes to file locations or other variables.
 3. Run `./run_atm_prep.sh`.
 4. Copy all netcdf files from `intercom/chgres` into your model run `INPUT` directory.

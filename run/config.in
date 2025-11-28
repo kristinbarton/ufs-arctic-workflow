@@ -17,12 +17,12 @@ export ICE_GRID_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/input_data/CICE6
 # Working directory locations
 export MAIN_DIR="$(pwd)/../" # Top level directory
 export RUN_DIR="$(pwd)/" # Current run directory
-export ATM_SCRIPT_DIR="${MAIN_DIR}/atm_prep/"
-export OCN_SCRIPT_DIR="${MAIN_DIR}/ocn_prep/"
-export ICE_SCRIPT_DIR="${MAIN_DIR}/ice_prep/"
-export ATM_RUN_DIR="${RUN_DIR}/atm_prep/"
-export OCN_RUN_DIR="${RUN_DIR}/ocn_prep/"
-export ICE_RUN_DIR="${RUN_DIR}/ice_prep/"
+export ATM_SCRIPT_DIR="${MAIN_DIR}/atm/"
+export OCN_SCRIPT_DIR="${MAIN_DIR}/ocn/"
+export ICE_SCRIPT_DIR="${MAIN_DIR}/ice/"
+export ATM_RUN_DIR="${RUN_DIR}/atm/"
+export OCN_RUN_DIR="${RUN_DIR}/ocn/"
+export ICE_RUN_DIR="${RUN_DIR}/ice/"
 
 # Point to HAFS directory locations
 export HAFSdir="/scratch4/BMC/gsienkf/Kristin.Barton/hwrf/HAFS/"

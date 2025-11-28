@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rm -rf atm_prep
-rm -rf ocn_prep
-rm -rf ice_prep
+rm -rf atm
+rm -rf ocn
+rm -rf ice
 rm -rf intercom
