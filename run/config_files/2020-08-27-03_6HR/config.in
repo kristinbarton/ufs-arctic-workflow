@@ -8,39 +8,39 @@ export OCN_DST_GRID_NAME="ARC12"
 export system="hera"
 
 # Set account for srun commands
-export SACCT="gsienkf"
+export SACCT="ufs-artic"
 
 # Locations to retrieve datasets from
 export ATM_CASE="C185"
 export OCN_CASE="ARC12"
 
-export ATM_DST_GRID_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/mesh_files/C185/"
+export ATM_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/C185/"
 
-export OCN_SRC_GRID_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/mesh_files/${OCN_SRC_GRID_NAME}/"
-export OCN_DST_GRID_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/mesh_files/${OCN_DST_GRID_NAME}/input_files/"
+export OCN_SRC_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_SRC_GRID_NAME}/"
+export OCN_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_DST_GRID_NAME}/input_files/"
 export WGT_FILE_BASE="gefs2arctic"
 
-export ICE_SRC_GRID_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/mesh_files/${OCN_SRC_GRID_NAME}/"
-#export ICE_DST_GRID_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/input_data/CICE6/"
-export ICE_DST_GRID_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/mesh_files/${OCN_DST_GRID_NAME}/input_files/"
+export ICE_SRC_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_SRC_GRID_NAME}/"
+#export ICE_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/CICE6/"
+export ICE_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_DST_GRID_NAME}/input_files/"
 
-export ATM_IC_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
-export ATM_LBC_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/fcst/atmos"
-export OCN_SRC_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
-export ICE_INPUT_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
+export ATM_IC_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
+export ATM_LBC_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/fcst/atmos"
+export OCN_SRC_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
+export ICE_INPUT_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
 
 # Working directory locations
 export MAIN_DIR="$(pwd)/../" # Top level directory
 export RUN_DIR="$(pwd)/" # Current run directory
-export ATM_SCRIPT_DIR="${MAIN_DIR}/atm_prep"
-export OCN_SCRIPT_DIR="${MAIN_DIR}/ocn_prep"
-export ICE_SCRIPT_DIR="${MAIN_DIR}/ice_prep"
-export ATM_RUN_DIR="${RUN_DIR}/atm_prep"
-export OCN_RUN_DIR="${RUN_DIR}/ocn_prep"
-export ICE_RUN_DIR="${RUN_DIR}/ice_prep"
+export ATM_SCRIPT_DIR="${MAIN_DIR}/atm"
+export OCN_SCRIPT_DIR="${MAIN_DIR}/ocn"
+export ICE_SCRIPT_DIR="${MAIN_DIR}/ice"
+export ATM_RUN_DIR="${RUN_DIR}/atm"
+export OCN_RUN_DIR="${RUN_DIR}/ocn"
+export ICE_RUN_DIR="${RUN_DIR}/ice"
 
 # Point to HAFS directory locations
-export HAFSdir="/scratch4/BMC/gsienkf/Kristin.Barton/hwrf/HAFS/"
+export HAFSdir="/scratch4/BMC/ufs-artic/Kristin.Barton/hwrf/HAFS/"
 export FIXhafs="${HAFSdir}/fix"
 export PARMhafs="${HAFSdir}/parm"
 export EXEChafs="${HAFSdir}/exec"
@@ -136,11 +136,11 @@ export WGRIB2="wgrib2"
 # Used by ATM
 export MAIN_DIR="$(pwd)/../" # Top level directory
 export RUN_DIR="$(pwd)/" # Current run directory
-export ATM_SCRIPT_DIR="${MAIN_DIR}/atm_prep"
-export ATM_RUN_DIR="${RUN_DIR}/atm_prep"
-export FIX_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/mesh_files"
+export ATM_SCRIPT_DIR="${MAIN_DIR}/atm"
+export ATM_RUN_DIR="${RUN_DIR}/atm"
+export FIX_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files"
 export ATM_CASE="C185"
-export ATM_DATA_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700"
+export ATM_DATA_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700"
 export ATM_TILE=7
 export ATM_LEVS=128
 export ATM_REGIONAL=1
@@ -155,16 +155,16 @@ export CDATE=2020082700
 export NHRS=6 # Total number of forecast hours
 export ATM_NBDYINT=3 # Boundary input interval in hours
 
-SACCT="gsienkf"
+SACCT="ufs-artic"
 export APRUNC="srun --ntasks=6 --nodes=2 --ntasks-per-node=3 --cpus-per-task=2 --account=${SACCT}"
 export NLN="ln -s"
 
 export CHGRES_EXEC="chgres_cube"
 export SYSTEM="ursa"
 if [ $SYSTEM = "hera" ]; then
-    export UFSUTILS_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/files/envs/UFS_UTILS"
+    export UFSUTILS_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/envs/UFS_UTILS"
 elif [ $SYSTEM = "ursa" ]; then
-    export UFSUTILS_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/repos/hafs-community/UFS_UTILS"
-    #export UFSUTILS_DIR="/scratch4/BMC/gsienkf/Kristin.Barton/repos/ufs-community/UFS_UTILS"
+    export UFSUTILS_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/repos/hafs-community/UFS_UTILS"
+    #export UFSUTILS_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/repos/ufs-community/UFS_UTILS"
 fi
 

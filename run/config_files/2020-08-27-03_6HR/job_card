@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH -e err
 #SBATCH -o out
-#SBATCH --account=gsienkf
-#SBATCH --qos=debug
+#SBATCH --account=ufs-artic
+#SBATCH --qos=batch
 #SBATCH --nodes=6
 #SBATCH --ntasks-per-node=40
 #SBATCH --time=30
-#SBATCH --job-name="regional_arctic_atm_ocn_ice"
+#SBATCH --job-name="ufs-arctic"
 ### #SBATCH --exclusive
 
 set -eux

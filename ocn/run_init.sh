@@ -48,19 +48,19 @@ export OCN_RUN_DIR=${OCN_RUN_DIR:-"$(pwd)"}
 export OCN_SRC_GRID_NAME=${OCN_SRC_GRID_NAME:-"mx025"}
 export OCN_DST_GRID_NAME=${OCN_DST_GRID_NAME:-"ARC12"}
 
-export OCN_SRC_GRID_DIR=${OCN_SRC_GRID_DIR:-"/scratch4/BMC/gsienkf/Kristin.Barton/files/mesh_files/${OCN_SRC_GRID_NAME}/"}
-export OCN_DST_GRID_DIR=${OCN_DST_GRID_DIR:-"/scratch4/BMC/gsienkf/Kristin.Barton/files/mesh_files/${OCN_DST_GRID_NAME}/input_files"}
+export OCN_SRC_GRID_DIR=${OCN_SRC_GRID_DIR:-"/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_SRC_GRID_NAME}/"}
+export OCN_DST_GRID_DIR=${OCN_DST_GRID_DIR:-"/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_DST_GRID_NAME}/input_files"}
 
-export OCN_SRC_DIR=${OCN_SRC_DIR:-"/scratch4/BMC/gsienkf/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"}
+export OCN_SRC_DIR=${OCN_SRC_DIR:-"/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"}
 
 # !!! Edit for your local dataset locations !!!
 # These can be found by checking the relevant system.conf file in the parm/ directory of the HAFS repository.
 COMINrtofs=${COMINrtofs:-"/scratch1/NCEPDEV/hwrf/noscrub/hafs-input/COMRTOFSv2/"}
 COMINgfs=${COMINgfs:-"/scratch1/NCEPDEV/hwrf/noscrub/hafs-input/COMGFSv16/"}
-COMINgefs=${COMINgefs:-"/scratch4/BMC/gsienkf/Kristin.Barton/files/input_data/GEFSv13-reforecasts/"}
+COMINgefs=${COMINgefs:-"/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/"}
 
 # !!! Edit for your HAFS directory (if needed) !!!
-HAFSdir=${HAFSdir:-"/scratch4/BMC/gsienkf/Kristin.Barton/hwrf/HAFS/"}
+HAFSdir=${HAFSdir:-"/scratch4/BMC/ufs-artic/Kristin.Barton/hwrf/HAFS/"}
 FIXhafs=${FIXhafs:-"${HAFSdir}/fix/"}
 PARMhafs=${PARMhafs:-"${HAFSdir}/parm/"}
 EXEChafs=${EXEChafs:-"${HAFSdir}/exec/"}

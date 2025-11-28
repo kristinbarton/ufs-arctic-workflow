@@ -3,7 +3,7 @@
 #SBATCH --output=mesh_gen.log
 #SBATCH --ntasks=1
 ## Edit the account
-#SBATCH --account=gsienkf
+#SBATCH --account=ufs-artic
 #SBATCH --time=05:00
 
 set -e
@@ -11,7 +11,7 @@ set -e
 module purge
 
 # Required modules are NCL and ESMF
-#module use /scratch4/BMC/gsienkf/Kristin.Barton/ufs-weather-model/modulefiles/
+#module use /scratch4/BMC/ufs-artic/Kristin.Barton/ufs-weather-model/modulefiles/
 #module load ufs_hera.intel
 module load ncl
 
