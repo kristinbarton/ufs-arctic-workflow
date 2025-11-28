@@ -1,45 +1,62 @@
 #!/bin/sh
 
-# Ocean grid type -- current Arctic MOM6 grid is ARC12
-export OCN_SRC_GRID_NAME="mx025"
-export OCN_DST_GRID_NAME="ARC12"
-
-# Currently, only Hera has been tested
-export system="hera"
-
-# Set account for srun commands
-export SACCT="ufs-artic"
-
-# Locations to retrieve datasets from
-export ATM_CASE="C185"
-export OCN_CASE="ARC12"
-
-export ATM_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/C185/"
-
-export OCN_SRC_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_SRC_GRID_NAME}/"
-export OCN_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_DST_GRID_NAME}/input_files/"
-export WGT_FILE_BASE="gefs2arctic"
-
-export ICE_SRC_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_SRC_GRID_NAME}/"
-#export ICE_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/CICE6/"
-export ICE_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_DST_GRID_NAME}/input_files/"
-
-export ATM_IC_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
-export ATM_LBC_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/fcst/atmos"
-export OCN_SRC_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
-export ICE_INPUT_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
-
-# Working directory locations
+# Used globally
 export MAIN_DIR="$(pwd)/../" # Top level directory
 export RUN_DIR="$(pwd)/" # Current run directory
-export ATM_SCRIPT_DIR="${MAIN_DIR}/atm"
-export OCN_SCRIPT_DIR="${MAIN_DIR}/ocn"
-export ICE_SCRIPT_DIR="${MAIN_DIR}/ice"
-export ATM_RUN_DIR="${RUN_DIR}/atm"
-export OCN_RUN_DIR="${RUN_DIR}/ocn"
-export ICE_RUN_DIR="${RUN_DIR}/ice"
 
-# Point to HAFS directory locations
+export CDATE=2020082700
+export CDATEprior=2020082600
+export NHRS=6 # Total number of forecast hours
+
+export SACCT="ufs-artic"
+export NLN="ln -s"
+export APRUNS="srun --ntasks=1 --nodes=1 --ntasks-per-node=1 --cpus-per-task=2 --account=${SACCT}"
+export APRUNC="srun --ntasks=6 --nodes=2 --ntasks-per-node=3 --cpus-per-task=2 --account=${SACCT}"
+
+# Used by OCN
+export OCN_SRC_GRID_NAME="mx025"
+export OCN_DST_GRID_NAME="ARC12"
+export OCN_CASE="ARC12"
+export OCN_SRC_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_SRC_GRID_NAME}/"
+export OCN_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_DST_GRID_NAME}/input_files/"
+export OCN_SRC_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
+export OCN_SCRIPT_DIR="${MAIN_DIR}/ocn"
+export OCN_RUN_DIR="${RUN_DIR}/ocn"
+export OCNINTYPE='gefs' # Options: rtofs or gefs 
+export OCN_H_WGT_FILE="${OCNINTYPE}2arctic_h.nc"
+export OCN_U_WGT_FILE="${OCNINTYPE}2arctic_u.nc"
+export OCN_V_WGT_FILE="${OCNINTYPE}2arctic_v.nc"
+export OCN_IC_FILE="mom6_IC.nc"
+export OCN_OUT_FILE_PATH_BASE="mom6_OBC_"
+export OCN_WGT_FILE_PATH_BASE="gefs2arctic_"
+export OCN_ANG_FILE_PATH_BASE="ocean_hgrid_"
+export OCN_HGD_FILE_PATH_BASE="ocean_hgrid_"
+export OCN_FILE_TAIL=".nc"
+export OCN_WGT_FILE_BASE="gefs2arctic"
+export OCN_SSH_VARNAME="sfc"
+export OCN_SSH_SRC_FILE="MOM.res_1.nc"
+export OCN_THK_VARNAME="h"
+export OCN_THK_SRC_FILE="MOM.res.nc"
+export OCN_TMP_VARNAME="Temp"
+export OCN_TMP_SRC_FILE="MOM.res.nc"
+export OCN_SAL_VARNAME="Salt"
+export OCN_SAL_SRC_FILE="MOM.res.nc"
+export OCN_U_VARNAME="u"
+export OCN_U_SRC_FILE="MOM.res.nc"
+export OCN_V_VARNAME="v"
+export OCN_V_SRC_FILE="MOM.res_1.nc"
+export OCN_SRC_ANG_NAME="angle_dx"
+export OCN_SRC_ANG_FILE="mx025.ocean_hgrid.nc"
+export OCN_SRC_CONVERT_ANG="True"
+export OCN_DST_ANG_NAME="angle_dx"
+export OCN_DST_ANG_FILE="ocean_hgrid.nc"
+export OCN_DST_CONVERT_ANG="True"
+export OCN_SRC_VRT_FILE="mx025.ocean_vgrid.nc"
+export OCN_SRC_VRT_NAME="zt"
+export OCN_DST_VRT_FILE="MOM.res.nc"
+export OCN_DST_VRT_NAME="Layer"
+export OCN_TIME_VARNAME="Time"
+
 export HAFSdir="/scratch4/BMC/ufs-artic/Kristin.Barton/hwrf/HAFS/"
 export FIXhafs="${HAFSdir}/fix"
 export PARMhafs="${HAFSdir}/parm"
@@ -49,93 +66,25 @@ export MODhafs="${HAFSdir}/modulefiles"
 export COMINrtofs="/scratch1/NCEPDEV/hwrf/noscrub/hafs-input/COMRTOFSv2"
 export COMINgfs="/scratch1/NCEPDEV/hwrf/noscrub/hafs-input/COMGFSv16"
 
-# Ocean Parameters and Files
-export USE_DATM=false   # Only set to true if using DATM input into ocean
-export OCNINTYPE='gefs' # Options: rtofs or gefs 
+# Used by ICE
+export ICE_SRC_GRID_NAME="mx025"
+export ICE_DST_GRID_NAME="ARC12"
+export ICEINTYPE='gefs' # Options: rtofs or gefs 
 
-export H_WGT_FILE="${OCNINTYPE}2arctic_h.nc"
-export U_WGT_FILE="${OCNINTYPE}2arctic_u.nc"
-export V_WGT_FILE="${OCNINTYPE}2arctic_v.nc"
-
-export OUT_FILE_PATH_BASE="mom6_OBC_"
-export WGT_FILE_PATH_BASE="gefs2hgrid_"
-export ANG_FILE_PATH_BASE="ocean_hgrid_"
-export HGD_FILE_PATH_BASE="ocean_hgrid_"
-export FILE_TAIL=".nc"
-
-export SSH_VARNAME="sfc"
-export SSH_SRC_FILE="MOM.res_1.nc"
-
-export THK_VARNAME="h"
-export THK_SRC_FILE="MOM.res.nc"
-
-export TMP_VARNAME="Temp"
-export TMP_SRC_FILE="MOM.res.nc"
-
-export SAL_VARNAME="Salt"
-export SAL_SRC_FILE="MOM.res.nc"
-
-export U_VARNAME="u"
-export U_SRC_FILE="MOM.res.nc"
-
-export V_VARNAME="v"
-export V_SRC_FILE="MOM.res_1.nc"
-
-export SRC_ANG_NAME="angle_dx"
-export SRC_ANG_FILE="mx025.ocean_hgrid.nc"
-export SRC_CONVERT_ANG="True"
-
-export DST_ANG_NAME="angle_dx"
-export DST_ANG_FILE="ocean_hgrid.nc"
-export DST_CONVERT_ANG="True"
-
-export SRC_VRT_FILE="mx025.ocean_vgrid.nc"
-export SRC_VRT_NAME="zt"
-
-#export DST_VRT_FILE="ARC12.ocean_vgrid.nc"
-#export DST_VRT_NAME="zt"
-
-export DST_VRT_FILE="MOM.res.nc"
-export DST_VRT_NAME="Layer"
-
-export TIME_VARNAME="Time"
-
+export ICE_SRC_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${ICE_SRC_GRID_NAME}/"
+export ICE_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${ICE_DST_GRID_NAME}/input_files/"
+export ICE_INPUT_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
+export ICE_SCRIPT_DIR="${MAIN_DIR}/ice"
+export ICE_RUN_DIR="${RUN_DIR}/ice"
 export ICE_SRC_FILE="Ct.mx025_SCRIP_masked.nc"
 export ICE_DST_FILE="ocean_mask.nc"
-export ICE_WGT_FILE="${OCNINTYPE}2arctic_h.nc"
-
-# Atmosphere Parameters-- Used by HAFS scripts
-export CDATE=2020082700
-export PDY=20200827
-export NDATE="/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.6.0/envs/unified-env-rocky8/install/intel/2021.5.0/prod-util-2.1.1-4vpcrpl/bin/ndate"
-export CDATEprior=$(${NDATE} -6 ${CDATE})
-export cyc=12
-export nest_grids=-1
-export CASE="C185_ARC"
-export LEVS=128
-export NATMBDYHRS=24
-export BC_GROUPI=1
-export BC_GROUPN=1
-export gtype=regional
-export ictype=gefsv13_replay
-export bctype=gefsv13_replay
-
-
-# Commands
-export APRUNS="srun --ntasks=1 --nodes=1 --ntasks-per-node=1 --cpus-per-task=2 --account=${SACCT}"
-export NLN="ln -s"
-export PLN="ln -s"
-export RLN="ln =s"
-export NCP="cp"
-export RM="rm"
-export WGRIB2="wgrib2"
-
-
-########## CLEANUP #############
+export ICE_WGT_FILE="${ICEINTYPE}2arctic_h.nc"
+export ICE_SRC_ANG_NAME="angle_dx"
+export ICE_SRC_ANG_FILE="mx025.ocean_hgrid.nc"
+export ICE_DST_ANG_NAME="angle_dx"
+export ICE_DST_ANG_FILE="ocean_hgrid.nc"
 
 # Used by ATM
-export MAIN_DIR="$(pwd)/../" # Top level directory
-export RUN_DIR="$(pwd)/" # Current run directory
 export ATM_SCRIPT_DIR="${MAIN_DIR}/atm"
 export ATM_RUN_DIR="${RUN_DIR}/atm"
 export FIX_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files"
@@ -151,15 +100,9 @@ export ATM_DST_CASE="C185"
 export ATM_ICTYPE="gefsv13_replay" 
 export ATM_BCTYPE="gefsv13_replay"
 
-export CDATE=2020082700
-export NHRS=6 # Total number of forecast hours
 export ATM_NBDYINT=3 # Boundary input interval in hours
 
-SACCT="ufs-artic"
-export APRUNC="srun --ntasks=6 --nodes=2 --ntasks-per-node=3 --cpus-per-task=2 --account=${SACCT}"
-export NLN="ln -s"
-
-export CHGRES_EXEC="chgres_cube"
+export CHGRES_EXEC="/scratch4/BMC/ufs-artic/Kristin.Barton/repos/hafs-community/UFS_UTILS/exec/chgres_cube"
 export SYSTEM="ursa"
 if [ $SYSTEM = "hera" ]; then
     export UFSUTILS_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/envs/UFS_UTILS"
@@ -167,4 +110,3 @@ elif [ $SYSTEM = "ursa" ]; then
     export UFSUTILS_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/repos/hafs-community/UFS_UTILS"
     #export UFSUTILS_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/repos/ufs-community/UFS_UTILS"
 fi
-

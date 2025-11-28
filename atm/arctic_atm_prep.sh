@@ -5,13 +5,9 @@ set -e -x -o pipefail
 module use ${UFSUTILS_DIR}/modulefiles
 module load build.${SYSTEM}.intelllvm.lua
 
-if [[ -n "$HAFSUTILS_DIR" ]]; then
-    CHGRESCUBEEXEC=${CHGRESCUBEEXEC:-${HAFSUTILS_DIR}/exec/hafs_utils_chgres_cube.x}
-else
-    CHGRESCUBEEXEC=${CHGRESCUBEEXEC:-${UFSUTILS_DIR}/exec/chgres_cube}
-fi
+CHGRES_EXEC=${CHGRES_EXEC}
 
-echo $CHGRESCUBEEXEC
+echo $CHGRES_EXEC
 
 CDATE=${CDATE}
 cycle_year=$(echo $CDATE | cut -c 1-4)
@@ -134,7 +130,7 @@ cat>./fort.41<<EOF
 /
 EOF
 
-${APRUNC} ${CHGRESCUBEEXEC} 2>&1 | tee ./chgres_cube_lbc.log
+${APRUNC} ${CHGRES_EXEC} 2>&1 | tee ./chgres_cube_lbc.log
 
 mv ${ATM_RUN_DIR}/gfs_ctrl.nc ${ATM_RUN_DIR}/intercom/gfs_ctrl.nc
 mv ${ATM_RUN_DIR}/gfs.bndy.nc ${ATM_RUN_DIR}/intercom/gfs_bndy.tile${ATM_TILE}.000.nc
@@ -230,7 +226,7 @@ cat>./fort.41<<EOF
  /
 EOF
 
-${APRUNC} ${CHGRESCUBEEXEC} 2>&1 | tee ./chgres_cube_lbc_${FHR3}.log
+${APRUNC} ${CHGRES_EXEC} 2>&1 | tee ./chgres_cube_lbc_${FHR3}.log
 
 mv ${ATM_RUN_DIR}/gfs.bndy.nc ${ATM_RUN_DIR}/intercom/gfs_bndy.tile${ATM_TILE}.${FHR3}.nc
 

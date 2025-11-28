@@ -40,6 +40,7 @@ NAMELIST_FILE="$CONFIG_DIR/config.in"
 module use /contrib/spack-stack/spack-stack-1.9.3/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
 module load stack-oneapi
 module load nco
+module load cdo
 
 source /scratch4/BMC/ufs-artic/Kristin.Barton/envs/miniconda3/etc/profile.d/conda.sh
 export PATH="/scratch4/BMC/ufs-artic/Kristin.Barton/envs/miniconda3/bin:$PATH"
@@ -124,5 +125,6 @@ $RUN_ICE && run_ice
 $RUN_ATM && run_atm
 
 # Retrieve config files
-$TASK_RAN && cp ${CONFIG_DIR}/* ${RUN_DIR}/intercom/.
+#cd ${RUN_DIR}
+#$TASK_RAN && cp ${CONFIG_DIR}/* ${RUN_DIR}/intercom/.
 exit 0
