@@ -21,7 +21,7 @@ Alternatively, the [UFS model](https://github.com/ufs-community/ufs-weather-mode
 Table of Contents
 =================
 - [Guides](#guides)
-  - [Accessing Existing Test Cases (Hera)](#accessing-existing-test-cases-hera)
+  - [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera)
   - [Setting up initial working ATM OCN ICE configuration](#setting-up-initial-working-atm-ocn-ice-configuration)
   - [Generating all Initial and Boundary Inputs](#generating-all-initial-and-boundary-inputs)
   - [Generating MOM6 Initial and Boundary Inputs](#generating-mom6-initial-and-boundary-inputs)
@@ -39,71 +39,27 @@ Guides
 Accessing Existing Test Cases (Hera/Ursa)
 ------------------------------------
 These are existing run directories containing all inputs needed to run the corresponding test case. Each one can be run independently of the others. All test cases can be found in `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/` from Hera or Ursa. 
-1. Recursively copy all files from the directory on Hera to your working directory.
+1. Recursively copy all files from the directory on Hera/Ursa to your working directory.
 2. From your working directory, edit `job_card` to specify account, QOS, and job name as needed.
 3. Run `sbatch job_card`
 
-Directories:
-* Static North Atlantic Atmosphere / Ocean:
-`/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/na_atm_ocn/`
-  * Components: FV3+MOM6
-  * ATM grid: N. America (HAFS grid)
-  * OCN grid: N. Atlantic (HAFS grid)
-  * UFS Version: ufs-community/ufs-weather-model (f3ce169)
-  * Compile Flags: `-DAPP=HAFS-MOM6W -DREGIONAL_MOM6=ON -DCDEPS_INLINE=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf_nonsst`
-* Arctic MOM6 Mesh Test (Arctic ocean grid with HAFS North American atmosphere grid):
-`/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/na_atm_arc_ocn/`
-  * Components: FV3+MOM6
-  * ATM grid: N. America (HAFS grid)
-  * OCN grid: 10km Arctic
-  * UFS Version: ufs-community/ufs-weather-model (f3ce169)
-  * Compile Flags: `-DAPP=HAFS-MOM6W -DREGIONAL_MOM6=ON -DCDEPS_INLINE=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf_nonsst`
-* Arctic FV3 and Arctic MOM6 Test (Both atmosphere and ocean are over the Arctic):
-`/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/arc_tile_atm_ocn/`
-  * Components: FV3+MOM6
-  * ATM grid: C96 Arctic Tile
-  * OCN grid: 10km Arctic
-  * UFS Version: ufs-community/ufs-weather-model (f3ce169)
-  * Compile Flags: `-DAPP=HAFS-MOM6W -DREGIONAL_MOM6=ON -DCDEPS_INLINE=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf_nonsst`
-* Global FV3 and Arctic MOM6+CICE6 (using `ufs.nfrac.aoflux` coupling):
-`/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/glb_atm_arc_ocn_ice`
-  * Components: FV3+MOM6+CICE6
-  * ATM grid: C96 Global
-  * OCN grid: 10km Arctic
-  * UFS Version: ufs-community/ufs-weather-model (9b9a630)
-  * Compile Flags: `-DAPP=S2S -DREGIONAL_MOM6=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf_nonsst`
-* Regional Arctic FV3+MOM6+CICE6 (using default ice initial conditions):
-`/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/arc_atm_ocn_ice_no_ics/`
-  * Components: FV3+MOM6+CICE6
-  * ATM grid: Arctic C185
-  * OCN grid: 10km Arctic
-  * UFS Version: kristinbarton/ufs-weather-model (003b184)
-  * Compile Flags: `-DAPP=HAFS-MOM6W -DREGIONAL_MOM6=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf_nonsst`
-* Regional Arctic FV3+MOM6+CICE6 (with ice initial conditions from file):
-`/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/arc_atm_ocn_ice/`
-  * Components: FV3+MOM6+CICE6
-  * ATM grid: Arctic C185
-  * OCN grid: 10km Arctic
-  * UFS Version: kristinbarton/ufs-weather-model (003b184)
-  * Compile Flags: `-DAPP=HAFS-MOM6W -DREGIONAL_MOM6=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf_nonsst`
-
 Generating Initial and Boundary Inputs
 -----------------------------------------------
-This will create both ocean and atmosphere inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Hera)](#accessing-existing-test-cases-hera))
+This will create both ocean and atmosphere inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera))
 1. First, go the the `run` directory and edit `run_prep.sh` so that it points to the desired config directory found in `config_files` (or setup your own `config.in`).
 2. Run `./run_prep.py` from `run` directory to generate all inputs.
 3. Output and configure files will be placed in a top-level directory called `intercom`. Place all `*.nc` files into `INPUT` in your run directory and place `MOM_input` into top level of run directory.
-4. Running `./clean.sh` or (on `dev_ursa` branch), running with the `--clean` (e.g., `./run_prep.py --clean --all`) will clean up the directory before running. This is recommended if you have old run data in the run directory.
-5. (Only on `dev_ursa` branch: You can specify specific components to generate boundary conditions for. By default `./run_prep.py` will generate files for atmosphere, ocean, and ice. To specify only one or two components, include `--ocn`, `--ice`, and/or `--atm` in the script call. You can also use `--all` to clarify input files should be generated for all components.
+4. Running `./clean.sh` will clean up the directory before running. This is recommended if you have old run data in the run directory.
+5. You can specify specific components to generate boundary conditions for. By default `./run_prep.py` will generate files for atmosphere, ocean, and ice. To specify only one or two components, include `--ocn`, `--ice`, and/or `--atm` in the script call. You can also use `--all` to clarify input files should be generated for all components.
 
 Setting up initial working ATM OCN ICE configuration
 ----------------------------------------------------
-The ATM+OCN+ICE configuration is currently a work in progress. It runs with global FV3 and regional Arctic MOM6+CICE6. Refer to `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/regional_fv3_mom6_cice6` on Hera for a working copy of the setup.
+The ATM+OCN+ICE configuration is currently a work in progress. It runs with global FV3 and regional Arctic MOM6+CICE6. Refer to `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/regional_fv3_mom6_cice6` on Ursa for a working copy of the setup.
 
 Starting from the ATM+OCN only test case, the following changes are necessary:
 1) Add regional Arctic atmosphere input files to `INPUT` and adjust the `input.nml`
   * Change values for `npx`,`npy`,`ntiles` as needed
-2) Obtain CICE6 input files from MOM6. Working copies for the current test grid can be found in the test case directory on Hera (`/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/global_atm_aoflux_with_cice`). The necessary files are:
+2) Obtain CICE6 input files from MOM6. Working copies for the current test grid can be found in the test case directory on Ursa (`/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/global_atm_aoflux_with_cice`). The necessary files are:
   * `grid_cice_NEMS_mxarctic.nc`
   * `kmtu_cice_NEMS_mxarctic.nc`
   * `ice_in`
@@ -183,9 +139,9 @@ Further discussion on setup can be found in the section on CICE below.
 
 Generating only MOM6 Initial and Boundary Inputs
 ------------------------------------------------
-This will create only the ocean inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Hera)](#accessing-existing-test-cases-hera))
+This will create only the ocean inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera))
 1. Go to the `ocn` directory.
-2. Copy necessary MOM6 grid files into the `fix/` directory (on Hera: `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/ocn/fix`).
+2. Copy necessary MOM6 grid files into the `fix/` directory (on Ursa: `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/ocn/fix`).
 3. Check `run_init.sh` has the environment variables set.
 4. Run: `./run_init.sh`.
 5. Copy all `.nc` output files from `intercom/` to the `INPUT/` inside your model run directory.
@@ -193,7 +149,7 @@ This will create only the ocean inputs that can be placed into an existing run d
 
 Generating only FV3 Initial and Boundary Inputs
 ------------------------------------------
-This will create only the atmosphere inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Hera)](#accessing-existing-test-cases-hera))
+This will create only the atmosphere inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera))
 1. Go to the `atm` directory.
 2. Check `config.in` file for any necessary changes to file locations or other variables.
 3. Run `./run_atm_prep.sh`.
@@ -201,8 +157,8 @@ This will create only the atmosphere inputs that can be placed into an existing 
 
 Generating ESMF mesh from MOM6 mask file
 ----------------------------------------
-This is for generating the meshes necessary to run with MOM6 in UFS based on existing MOM6 grid files. These have already been generated for the Arctic MOM6 mesh used in [Accessing Existing Test Cases (Hera)](#accessing-existing-test-cases-hera). 
-1. Find the required files in `mom6_mesh_generation` (or on Hera: `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_testing/mesh_generation/`)
+This is for generating the meshes necessary to run with MOM6 in UFS based on existing MOM6 grid files. These have already been generated for the Arctic MOM6 mesh used in [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera). 
+1. Find the required files in `mom6_mesh_generation` (or on Ursa: `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_testing/mesh_generation/`)
 2. Copy both files to the directory containing an ocean mask file.
 * *Note*: This requires an `ocean_mask.nc` file containing longitude and latitude variables `x(ny,nx)` and `y(ny,nx)`, respectively. 
 * If you have these variables but with different names, edit the `gen_scrip.ncl` file lines 42 and 48 to the correct variable names.
@@ -212,7 +168,7 @@ This is for generating the meshes necessary to run with MOM6 in UFS based on exi
 
 Generating a MOM6 Mask File
 ---------------------------
-This can be used if you do not have a MOM6 mesh or need to generate a new mesh with different parameters. A MOM6 mask file has already been generated for the Arctic MOM6 mesh used in [Accessing Existing Test Cases (Hera)](#accessing-existing-test-cases-hera). 
+This can be used if you do not have a MOM6 mesh or need to generate a new mesh with different parameters. A MOM6 mask file has already been generated for the Arctic MOM6 mesh used in [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera). 
 1. Use [FRE-NCtools](https://github.com/NOAA-GFDL/FRE-NCtools.git) command:
 `make_quick_mosaic --input_mosaic input_mosaic.nc [--mosaic_name mosaic_name] [--ocean_topog ocean_topog.nc] [--sea_level #] [--reproduce_siena] [--land_frac_file frac_file] [--land_frac_field frac_field]`
 2. Make note of the sea level chosen in this step! 0 is the default if it is not specified. You will need to make sure this value is consistent with `MASKING_DEPTH` variable in `MOM_input`
@@ -220,7 +176,7 @@ This can be used if you do not have a MOM6 mesh or need to generate a new mesh w
 Generating new Initial Condition file from RTOFS input
 ------------------------------------------------------
 This is automatically done as part of the [Generating MOM6 Initial and Boundary Inputs](#generating-mom6-initial-and-boundary-inputs) scripts.
-1. Recursively copy all files from the directory on Hera to your working directory
+1. Recursively copy all files from the directory on Ursa to your working directory
 `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/input_files/ocn_ic/`
 2. Required mesh and interpolation weight files are already in the directory for the current Arctic mesh. If you would like to generate new interpolation weights (e.g., for a different mesh), make sure to do the following:
 * Replace `ocean_mask.nc`, `ocean_hgrid.nc`, and `ocean_vgrid.nc` files with those corresponding to your grid.
@@ -238,7 +194,7 @@ This explains how to set up a brand new test case from an existing regression te
 `git clone --recursive https://github.com/ufs-community/ufs-weather-model.git ufs-weather-model`
 2. Go to the tests directory
 `cd ufs-weather-model/tests`
-3. Modify the rt.sh file so that the `dprefix` corresponding to your system (e.g., Hera) points to your local working directory (e.g., `dprefix="/scratch4/BMC/ufs-artic/Kristin.Barton/stmp"`)
+3. Modify the rt.sh file so that the `dprefix` corresponding to your system (e.g., Ursa) points to your local working directory (e.g., `dprefix="/scratch4/BMC/ufs-artic/Kristin.Barton/stmp"`)
 4. Copy `rt.conf` to `rt_test.conf` and delete all but the following lines:
 ```
 COMPILE | hafs_mom6w | intel| -DAPP=HAFS-MOM6W -DREGIONAL_MOM6=ON -DCDEPS_INLINE=ON -DMOVING_NEST=ON -DCCPP_SUITES=FV3_HAFS_v1_gfdlmp_tedmf,FV3_HAFS_v1_gfdlmp_tedmf_nonsst,FV3_HAFS_v1_thompson,FV3_HAFS_v1_thompson_nonsst -D32BIT=ON | -jet noaacloud  s4 | fv3 |
@@ -311,7 +267,7 @@ The following grid files are needed to run CICE6:
 * `grid_cice_NEMS_mx{res}.nc`
 * `kmtu_cice_NEMS_mx{res}.nc`
 
-See generated files for the existing MOM6 Arctic test case on Hera here: `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/cice6_grid_gen/grid_files/`
+See generated files for the existing MOM6 Arctic test case on Ursa here: `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/cice6_grid_gen/grid_files/`
 
 These must be generated based on the MOM6 mesh and can be done with the [UFS_Utils](https://github.com/ufs-community/UFS_UTILS) `cpld_gridgen` utility.
 
