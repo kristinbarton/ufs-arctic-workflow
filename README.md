@@ -21,7 +21,7 @@ Alternatively, the [UFS model](https://github.com/ufs-community/ufs-weather-mode
 Table of Contents
 =================
 - [Guides](#guides)
-  - [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera)
+  - [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-ursa)
   - [Setting up initial working ATM OCN ICE configuration](#setting-up-initial-working-atm-ocn-ice-configuration)
   - [Generating all Initial and Boundary Inputs](#generating-all-initial-and-boundary-inputs)
   - [Generating MOM6 Initial and Boundary Inputs](#generating-mom6-initial-and-boundary-inputs)
@@ -45,7 +45,7 @@ These are existing run directories containing all inputs needed to run the corre
 
 Generating Initial and Boundary Inputs
 -----------------------------------------------
-This will create both ocean and atmosphere inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera))
+This will create both ocean and atmosphere inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-ursa))
 1. First, go the the `run` directory and edit `run_prep.sh` so that it points to the desired config directory found in `config_files` (or setup your own `config.in`).
 2. Run `./run_prep.py` from `run` directory to generate all inputs.
 3. Output and configure files will be placed in a top-level directory called `intercom`. Place all `*.nc` files into `INPUT` in your run directory and place `MOM_input` into top level of run directory.
@@ -139,7 +139,7 @@ Further discussion on setup can be found in the section on CICE below.
 
 Generating only MOM6 Initial and Boundary Inputs
 ------------------------------------------------
-This will create only the ocean inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera))
+This will create only the ocean inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-ursa))
 1. Go to the `ocn` directory.
 2. Copy necessary MOM6 grid files into the `fix/` directory (on Ursa: `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/ocn/fix`).
 3. Check `run_init.sh` has the environment variables set.
@@ -149,7 +149,7 @@ This will create only the ocean inputs that can be placed into an existing run d
 
 Generating only FV3 Initial and Boundary Inputs
 ------------------------------------------
-This will create only the atmosphere inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera))
+This will create only the atmosphere inputs that can be placed into an existing run directory (e.g., see [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-ursa))
 1. Go to the `atm` directory.
 2. Check `config.in` file for any necessary changes to file locations or other variables.
 3. Run `./run_atm_prep.sh`.
@@ -157,7 +157,7 @@ This will create only the atmosphere inputs that can be placed into an existing 
 
 Generating ESMF mesh from MOM6 mask file
 ----------------------------------------
-This is for generating the meshes necessary to run with MOM6 in UFS based on existing MOM6 grid files. These have already been generated for the Arctic MOM6 mesh used in [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera). 
+This is for generating the meshes necessary to run with MOM6 in UFS based on existing MOM6 grid files. These have already been generated for the Arctic MOM6 mesh used in [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-ursa). 
 1. Find the required files in `mom6_mesh_generation` (or on Ursa: `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_testing/mesh_generation/`)
 2. Copy both files to the directory containing an ocean mask file.
 * *Note*: This requires an `ocean_mask.nc` file containing longitude and latitude variables `x(ny,nx)` and `y(ny,nx)`, respectively. 
@@ -168,7 +168,7 @@ This is for generating the meshes necessary to run with MOM6 in UFS based on exi
 
 Generating a MOM6 Mask File
 ---------------------------
-This can be used if you do not have a MOM6 mesh or need to generate a new mesh with different parameters. A MOM6 mask file has already been generated for the Arctic MOM6 mesh used in [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-hera). 
+This can be used if you do not have a MOM6 mesh or need to generate a new mesh with different parameters. A MOM6 mask file has already been generated for the Arctic MOM6 mesh used in [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-ursa). 
 1. Use [FRE-NCtools](https://github.com/NOAA-GFDL/FRE-NCtools.git) command:
 `make_quick_mosaic --input_mosaic input_mosaic.nc [--mosaic_name mosaic_name] [--ocean_topog ocean_topog.nc] [--sea_level #] [--reproduce_siena] [--land_frac_file frac_file] [--land_frac_field frac_field]`
 2. Make note of the sea level chosen in this step! 0 is the default if it is not specified. You will need to make sure this value is consistent with `MASKING_DEPTH` variable in `MOM_input`
