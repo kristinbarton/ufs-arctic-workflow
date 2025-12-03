@@ -95,7 +95,7 @@ ${APRUNS} python rtofs_to_mom6.py \
     --time_name ${TIME_VARNAME}
 echo ""
 
-echo "Calling remapping script for SSH (or Thickness) Variable"
+echo "Calling remapping script for Thickness Variable"
 ${APRUNS} python rtofs_to_mom6.py \
     --var_name ${THK_VARNAME} \
     --src_file ${THK_SRC_FILE_PATH} \
@@ -105,7 +105,7 @@ ${APRUNS} python rtofs_to_mom6.py \
     --dz_name ${DST_VRT_NAME} \
     --time_name ${TIME_VARNAME}
 
-echo "Calling remapping script for SSH (or Thickness) Variable"
+echo "Calling remapping script for SSH Variable"
 ${APRUNS} python rtofs_to_mom6.py \
     --var_name ${SSH_VARNAME} \
     --src_file ${SSH_SRC_FILE_PATH} \
@@ -114,3 +114,9 @@ ${APRUNS} python rtofs_to_mom6.py \
     --out_file ${OUT_FILE_PATH} \
     --dz_name ${DST_VRT_NAME} \
     --time_name ${TIME_VARNAME}
+
+echo "Adding eta variable to IC file"
+${APRUNS} python utils/add_eta.py \
+    --file_name ${OUT_FILE_PATH} \
+    --thickness_variable ${THK_VARNAME} \
+    --time_dim ${TIME_VARNAME}

@@ -1,7 +1,7 @@
 """
 Script Name: rtofs_to_mom6.py
 Authors: Kristin Barton (kristin.barton@noaa.gov) and UFS Arctic Team
-Last Modified: 15 January 2025
+Last Modified: 1 December 2025
 Description:
     This code performs the interoplation data from RTOFS input netCDF file
     onto a MOM6 staggered grid using input ESMF Regridding weight files.
@@ -36,6 +36,9 @@ def main(args):
     dz_name_out = args.dz_name_out or dz_name
     time_name_out = args.time_name_out or time_name
 
+    # Optional -- Calculate thickness (eta) and add to output file
+    add_eta = args.add_eta or False
+
     # Optional -- Default to 0th time step if not specified
     forecast_iter = args.forecast_iter or 0
     
@@ -68,9 +71,6 @@ def main(args):
         dst_angle = utilities.read_variable_from_file(dst_ang_file, dst_ang_name)
     else:
         dst_angle = None
-
-    print(src_angle)
-    print(dst_angle)
 
     # Perform horizontal interpolation
     print(f"... Interpolating ...")
@@ -167,6 +167,10 @@ if __name__=="__main__":
                         required=False,
                         type=int,
                         help=f"Forecast iter, defaults to 0 (first time step). If > 0, appends data along time dimension.")
+    parser.add_argument("--add_eta",
+                        required=False,
+                        type=bool,
+                        help=f"Calculate thickness (eta) and add to output file")
 
     args = parser.parse_args()  
 

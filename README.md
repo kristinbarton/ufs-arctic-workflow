@@ -36,7 +36,7 @@ Table of Contents
 Guides
 ======
 
-Accessing Existing Test Cases (Hera/Ursa)
+Accessing Existing Test Cases (Ursa)
 ------------------------------------
 These are existing run directories containing all inputs needed to run the corresponding test case. Each one can be run independently of the others. All test cases can be found in `/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/test_cases/` from Hera or Ursa. 
 1. Recursively copy all files from the directory on Hera/Ursa to your working directory.
