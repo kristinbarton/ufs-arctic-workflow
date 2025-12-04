@@ -38,6 +38,7 @@ setup() {
     CONFIG_DIR="./config_files/2020-08-27-03_6HR"
     NAMELIST_FILE="$CONFIG_DIR/config.in"
     
+    module purge
     module use /contrib/spack-stack/spack-stack-1.9.3/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
     module load stack-oneapi
     module load nco
