@@ -22,10 +22,10 @@ Table of Contents
 =================
 - [Guides](#guides)
   - [Accessing Existing Test Cases (Ursa)](#accessing-existing-test-cases-ursa)
+  - [Generating Initial and Boundary Inputs](#generating-initial-and-boundary-inputs)
   - [Setting up initial working ATM OCN ICE configuration](#setting-up-initial-working-atm-ocn-ice-configuration)
-  - [Generating all Initial and Boundary Inputs](#generating-all-initial-and-boundary-inputs)
-  - [Generating MOM6 Initial and Boundary Inputs](#generating-mom6-initial-and-boundary-inputs)
-  - [Generating FV3 Initial and Boundary Inputs](#generating-fv3-initial-and-boundary-inputs)
+  - [Generating only MOM6 Initial and Boundary Inputs](#generating-only-mom6-initial-and-boundary-inputs)
+  - [Generating only FV3 Initial and Boundary Inputs](#generating-only-fv3-initial-and-boundary-inputs)
   - [Generating ESMF mesh from MOM6 mask file](#generating-esmf-mesh-from-mom6-mask-file)
   - [Generating a MOM6 Mask File](#generating-a-mom6-mask-file)
   - [Generating new Initial Condition file from RTOFS input](#generating-new-initial-condition-file-from-rtofs-input)

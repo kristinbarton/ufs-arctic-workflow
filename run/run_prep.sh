@@ -13,9 +13,9 @@ Options:
   --atm         Run Atmosphere prep
   --all         Run all three tasks (ocn, ice, atm)
 
-If no task options are provided, all tasks are run by default.
+Task options must be provided.
 Examples:
-  $0                 # runs ocn, ice, atm
+  $0 --clean         # runs ./clean.sh only
   $0 --ocn           # runs only ocn
   $0 --ocn,atm       # runs ocn and atm (not ice)
   $0 --clean --ocn   # runs ./clean.sh once, then ocn only
@@ -33,27 +33,29 @@ for arg in "$@"; do
     esac
 done
 
-# Change config directory to run case
-CONFIG_DIR="./config_files/2020-08-27-03_6HR"
-NAMELIST_FILE="$CONFIG_DIR/config.in"
+setup() {
+    # Change config directory to run case
+    CONFIG_DIR="./config_files/2020-08-27-03_6HR"
+    NAMELIST_FILE="$CONFIG_DIR/config.in"
+    
+    module use /contrib/spack-stack/spack-stack-1.9.3/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
+    module load stack-oneapi
+    module load nco
+    module load cdo
+    
+    source /scratch4/BMC/ufs-artic/Kristin.Barton/envs/miniconda3/etc/profile.d/conda.sh
+    export PATH="/scratch4/BMC/ufs-artic/Kristin.Barton/envs/miniconda3/bin:$PATH"
+    conda activate ufs-arctic
+    
+    if [[ -f "$NAMELIST_FILE" ]]; then
+        source "$NAMELIST_FILE"
+    else
+        echo "Namelist file $NAMELIST_FILE not found!"
+        exit 1
+    fi
 
-module use /contrib/spack-stack/spack-stack-1.9.3/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
-module load stack-oneapi
-module load nco
-module load cdo
-
-source /scratch4/BMC/ufs-artic/Kristin.Barton/envs/miniconda3/etc/profile.d/conda.sh
-export PATH="/scratch4/BMC/ufs-artic/Kristin.Barton/envs/miniconda3/bin:$PATH"
-conda activate ufs-arctic
-
-if [[ -f "$NAMELIST_FILE" ]]; then
-    source "$NAMELIST_FILE"
-else
-    echo "Namelist file $NAMELIST_FILE not found!"
-    exit 1
-fi
-
-mkdir -p ${RUN_DIR}/intercom
+    mkdir -p ${RUN_DIR}/intercom
+}
 
 run_ocn() {
     # Ocean prep
@@ -98,12 +100,6 @@ RUN_ICE=false
 RUN_ATM=false
 TASK_RAN=false
 
-if [$# -eq 0]; then
-    RUN_OCN=true
-    RUN_ICE=true
-    RUN_ATM=true
-fi
-
 for arg in "$@"; do
     case "$arg" in
         --clean) CLEAN=true ;;
@@ -120,6 +116,8 @@ done
 
 $CLEAN && [ -f ./clean.sh ] && ./clean.sh
 
+($RUN_OCN || $RUN_ICE || $RUN_ATM) && setup
+
 $RUN_OCN && run_ocn
 $RUN_ICE && run_ice
 $RUN_ATM && run_atm
@@ -127,4 +125,5 @@ $RUN_ATM && run_atm
 # Retrieve config files
 #cd ${RUN_DIR}
 #$TASK_RAN && cp ${CONFIG_DIR}/* ${RUN_DIR}/intercom/.
+
 exit 0
