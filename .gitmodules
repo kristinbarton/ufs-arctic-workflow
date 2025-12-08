@@ -1,3 +1,4 @@
 [submodule "ufs-weather-model"]
 	path = ufs-weather-model
 	url = git@github.com:kristinbarton/ufs-weather-model.git
+	branch = arctic-dev

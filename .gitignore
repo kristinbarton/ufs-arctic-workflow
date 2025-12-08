@@ -6,6 +6,7 @@
 *.swp
 
 # Run directory ignores
-run/atm/
-run/ocn/
-run/intercom/
+prep/atm/
+prep/ocn/
+prep/intercom/
+run/
