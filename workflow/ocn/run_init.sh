@@ -155,79 +155,79 @@ cd ${OCN_RUN_DIR}/inputs/
 cd ${OCN_SCRIPT_DIR}
 ./remap_ICs.sh
 
-## ----------------------------------------------------------------------------------- #
-##                                   OBC Setup                                         #
-## ----------------------------------------------------------------------------------- #
-#
-#cd ${OCN_RUN_DIR}/inputs/
-#
-#if [ $OCNINTYPE == 'rtofs' ]; then
-#    # Define output file names and HYCOM variables
-#    outnc_2d=global_ssh_obc.nc
-#    outnc_ts=global_ts_obc.nc
-#    outnc_uv=global_uv_obc.nc
-#    
-#    if [ ! -e "${OCN_RUN_DIR}/inputs/${WGT_FILE_BASE}_001.nc" ]; then
-#        echo "File ${WGT_FILE_BASE}.nc  does not exist. Creating the file..."
-#        ${APRUNS} ESMF_RegridWeightGen -s ${ICFILENAME} -d ocean_hgrid_001.nc -w ${WGT_FILE_BASE}_001.nc --dst_loc center --netCDF4 --dst_regional --ignore_degenerate
-#    fi
-#    if [ ! -e "${OCN_RUN_DIR}/inputs/${WGT_FILE_BASE}_002.nc" ]; then
-#        echo "File ${WGT_FILE_BASE}_002.nc  does not exist. Creating the file..."
-#        ${APRUNS} ESMF_RegridWeightGen -s ${ICFILENAME} -d ocean_hgrid_002.nc -w ${WGT_FILE_BASE}_002.nc --dst_loc center --netCDF4 --dst_regional --ignore_degenerate
-#    fi
-#    if [ ! -e "${OCN_RUN_DIR}/inputs/${WGT_FILE_BASE}_003.nc" ]; then
-#        echo "File ${WGT_FILE_BASE}_003.nc  does not exist. Creating the file..."
-#        ${APRUNS} ESMF_RegridWeightGen -s ${ICFILENAME} -d ocean_hgrid_003.nc -w ${WGT_FILE_BASE}_003.nc --dst_loc center --netCDF4 --dst_regional --ignore_degenerate
-#    fi
-#    if [ ! -e "${OCN_RUN_DIR}/inputs/${WGT_FILE_BASE}_004.nc" ]; then
-#        echo "File ${WGT_FILE_BASE}_004.nc  does not exist. Creating the file..."
-#        ${APRUNS} ESMF_RegridWeightGen -s ${ICFILENAME} -d ocean_hgrid_004.nc -w ${WGT_FILE_BASE}_004.nc --dst_loc center --netCDF4 --dst_regional --ignore_degenerate
-#    fi
-#    
-#    if [ -e ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a ]; then
-#      ${NLN} ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a archv_in.a
-#    elif [ -e ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a.tgz ]; then
-#      tar -xpvzf ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a.tgz
-#      ${NLN} rtofs_glo.t00z.${type}${HH}.archv.a archv_in.a
-#    else
-#      echo "FATAL ERROR: ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a does not exist."
-#      echo "FATAL ERROR: ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a.tgz does not exist either."
-#      echo "FATAL ERROR: Cannot generate MOM6 OBC. Exiting"
-#      exit 1
-#    fi
-#    if [ -e ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.b ]; then
-#      ${NLN} ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.b archv_in.b
-#    else
-#      echo "FATAL ERROR: ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.b does not exist."
-#      echo "FATAL ERROR: Cannot generate MOM6 OBC. Exiting"
-#      exit 1
-#    fi
-#    
-#    export CDF038=rtofs.${type}${HH}_${outnc_2d}
-#    export CDF034=rtofs.${type}${HH}_${outnc_ts}
-#    export CDF033=rtofs.${type}${HH}_${outnc_uv}
-#    
-#    # Run HYCOM-tools executables to produce OBC netcdf files
-#    ${APRUNS} ${EXEChafs}/hafs_hycom_utils_archv2ncdf2d.x < ./rtofs_global_ssh_obc.in 2>&1 | tee ./archv2ncdf2d_ssh_obc.log
-#    ${APRUNS} ${EXEChafs}/hafs_hycom_utils_archv2ncdf3z.x < ./rtofs_global_3d_obc.in 2>&1 | tee ./archv2ncdf3z_3d_obc.log
-#    
-#    unlink archv_in.a
-#    unlink archv_in.b
-#    echo "OCN source grid type invalid"
-#    exit 1
-#fi
-#
-#for i in $(seq -f "%03g" 1 4); do
-#    FILE="${WGT_FILE_BASE}_${i}.nc"
-#    if [ ! -e "${OCN_RUN_DIR}/inputs/${FILE}" ]; then
-#        echo "File ${FILE} does not exist. Creating the file..."
-#        ${APRUNS} ESMF_RegridWeightGen -s ${BCFILENAME} -d ocean_hgrid_${i}.nc -w ${FILE} \
-#            --dst_loc center --netCDF4 --dst_regional --ignore_degenerate
-#    fi
-#done
-#
-#cd ${OCN_SCRIPT_DIR}
-#./remap_OBCs.sh
+# ----------------------------------------------------------------------------------- #
+#                                   OBC Setup                                         #
+# ----------------------------------------------------------------------------------- #
+
+cd ${OCN_RUN_DIR}/inputs/
+
+if [ $OCNINTYPE == 'rtofs' ]; then
+    # Define output file names and HYCOM variables
+    outnc_2d=global_ssh_obc.nc
+    outnc_ts=global_ts_obc.nc
+    outnc_uv=global_uv_obc.nc
+    
+    if [ ! -e "${OCN_RUN_DIR}/inputs/${WGT_FILE_BASE}_001.nc" ]; then
+        echo "File ${WGT_FILE_BASE}.nc  does not exist. Creating the file..."
+        ${APRUNS} ESMF_RegridWeightGen -s ${ICFILENAME} -d ocean_hgrid_001.nc -w ${WGT_FILE_BASE}_001.nc --dst_loc center --netCDF4 --dst_regional --ignore_degenerate
+    fi
+    if [ ! -e "${OCN_RUN_DIR}/inputs/${WGT_FILE_BASE}_002.nc" ]; then
+        echo "File ${WGT_FILE_BASE}_002.nc  does not exist. Creating the file..."
+        ${APRUNS} ESMF_RegridWeightGen -s ${ICFILENAME} -d ocean_hgrid_002.nc -w ${WGT_FILE_BASE}_002.nc --dst_loc center --netCDF4 --dst_regional --ignore_degenerate
+    fi
+    if [ ! -e "${OCN_RUN_DIR}/inputs/${WGT_FILE_BASE}_003.nc" ]; then
+        echo "File ${WGT_FILE_BASE}_003.nc  does not exist. Creating the file..."
+        ${APRUNS} ESMF_RegridWeightGen -s ${ICFILENAME} -d ocean_hgrid_003.nc -w ${WGT_FILE_BASE}_003.nc --dst_loc center --netCDF4 --dst_regional --ignore_degenerate
+    fi
+    if [ ! -e "${OCN_RUN_DIR}/inputs/${WGT_FILE_BASE}_004.nc" ]; then
+        echo "File ${WGT_FILE_BASE}_004.nc  does not exist. Creating the file..."
+        ${APRUNS} ESMF_RegridWeightGen -s ${ICFILENAME} -d ocean_hgrid_004.nc -w ${WGT_FILE_BASE}_004.nc --dst_loc center --netCDF4 --dst_regional --ignore_degenerate
+    fi
+    
+    if [ -e ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a ]; then
+      ${NLN} ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a archv_in.a
+    elif [ -e ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a.tgz ]; then
+      tar -xpvzf ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a.tgz
+      ${NLN} rtofs_glo.t00z.${type}${HH}.archv.a archv_in.a
+    else
+      echo "FATAL ERROR: ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a does not exist."
+      echo "FATAL ERROR: ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.a.tgz does not exist either."
+      echo "FATAL ERROR: Cannot generate MOM6 OBC. Exiting"
+      exit 1
+    fi
+    if [ -e ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.b ]; then
+      ${NLN} ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.b archv_in.b
+    else
+      echo "FATAL ERROR: ${COMINrtofs}/rtofs.$ymd/rtofs_glo.t00z.${type}${HH}.archv.b does not exist."
+      echo "FATAL ERROR: Cannot generate MOM6 OBC. Exiting"
+      exit 1
+    fi
+    
+    export CDF038=rtofs.${type}${HH}_${outnc_2d}
+    export CDF034=rtofs.${type}${HH}_${outnc_ts}
+    export CDF033=rtofs.${type}${HH}_${outnc_uv}
+    
+    # Run HYCOM-tools executables to produce OBC netcdf files
+    ${APRUNS} ${EXEChafs}/hafs_hycom_utils_archv2ncdf2d.x < ./rtofs_global_ssh_obc.in 2>&1 | tee ./archv2ncdf2d_ssh_obc.log
+    ${APRUNS} ${EXEChafs}/hafs_hycom_utils_archv2ncdf3z.x < ./rtofs_global_3d_obc.in 2>&1 | tee ./archv2ncdf3z_3d_obc.log
+    
+    unlink archv_in.a
+    unlink archv_in.b
+    echo "OCN source grid type invalid"
+    exit 1
+fi
+
+for i in $(seq -f "%03g" 1 4); do
+    FILE="${WGT_FILE_BASE}_${i}.nc"
+    if [ ! -e "${OCN_RUN_DIR}/inputs/${FILE}" ]; then
+        echo "File ${FILE} does not exist. Creating the file..."
+        ${APRUNS} ESMF_RegridWeightGen -s ${BCFILENAME} -d ocean_hgrid_${i}.nc -w ${FILE} \
+            --dst_loc center --netCDF4 --dst_regional --ignore_degenerate
+    fi
+done
+
+cd ${OCN_SCRIPT_DIR}
+./remap_OBCs.sh
 
 exit 0
 

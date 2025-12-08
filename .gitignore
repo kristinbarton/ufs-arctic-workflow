@@ -8,5 +8,6 @@
 # Run directory ignores
 prep/atm/
 prep/ocn/
+prep/ice/
 prep/intercom/
 run/
