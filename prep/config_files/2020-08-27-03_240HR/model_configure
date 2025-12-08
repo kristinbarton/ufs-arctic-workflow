@@ -1,12 +1,12 @@
 start_year:              2020
 start_month:             08
 start_day:               27
-start_hour:              03
+start_hour:              3
 start_minute:            0
 start_second:            0
 nhours_fcst:             240
 dt_atmos:                180
-restart_interval:        0
+restart_interval:        240
 
 quilting:                .true.
 quilting_restart:        .true.
@@ -21,28 +21,21 @@ jchunk2d:                -1
 ichunk3d:                -1
 jchunk3d:                -1
 kchunk3d:                -1
-ideflate:                1
+ideflate:                0
+zstandard_level:         0
 quantize_mode:           'quantize_bitround'
 quantize_nsd:            0
 
-output_grid:             gaussian_grid # gaussian_grid, global_latlon, regional_latlon[_moving], rotated_latlon[_moving], lambert_conformal, cubed_sphere_grid
-imo:                     155 # number of grid points along longitude/latitude direction
-jmo:                     125            # needed for gaussian_grid, global_latlon, regional_latlon_moving, or rotated_latlon_moving
-#cen_lon:                 0.0         # central longitude/latitude (degrees)
-#cen_lat:                 90.0         # needed for rotated_latlon, lambert_conformal
-#lon1:                    0.0            # longitude/latitude of lower-left corner
-#lat1:                    -40.00            # needed for regional_latlon, rotated_latlon, lambert_conformal
-#lon2:                    360.0            # longitude/latitude of upper-right corner
-#lat2:                    40.00            # needed for regional_latlon, rotated_latlon
-#dlon:                    0.25            # grid spacing in longitude/latitude direction (degrees)
-#dlat:                    0.25            # needed for regional_latlon[_moving], rotated_latlon[_moving]
-#stdlat1:                          # latitude of first/second standard parallel (degrees)
-#stdlat2:                          # needed for lambert_conformal
-#nx:                                    # number of grid cells along x/y-axis
-#ny:                                    # needed for lambert_conformal
-#dx:                                    # grid cell size in x/y direction (meters)
-#dy:                                    # needed for lambert_conformal
-
+output_grid:             'cubed_sphere_grid' # cubed_sphere_grid or rotated_latlon
+#Parameters for rotated_latlon
+cen_lon:                  -110.0
+cen_lat:                  83.0
+lon1:                    -50.0
+lat1:                    -33.0
+lon2:                     43.0
+lat2:                     33.0
+dlon:                     0.25
+dlat:                     0.25
 
 output_fh:               3 -1       # Output forecast hours controlled by output_fh (see notes below)
 # a) An array of output_fh means to output history files at those forecast time (e.g., "output_fh: 0 1 2 3 12 24 48")

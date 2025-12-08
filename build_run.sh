@@ -1,7 +1,11 @@
-TOP_DIR=$(pwd)
-
+export CASE_NAME='2020-08-27-03_240HR'
 SYSTEM="ursa"
-COMPILER="intel"
+COMPILER="intelllvm"
+ATM_RES='C185'
+FIX_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/fix_files"
+export ACCT='ufs-artic'
+
+TOP_DIR=$(pwd)
 UFS_DIR=${TOP_DIR}/ufs-weather-model
 cd ${UFS_DIR}/build
 make clean
@@ -18,8 +22,6 @@ cd ${PREP_DIR}
 
 cd ${TOP_DIR}
 mkdir ${TOP_DIR}/run
-
-mkdir ${TOP_DIR}/run
 MODEL_DIR=${TOP_DIR}/run
 
 mkdir ${MODEL_DIR}/INPUT
@@ -27,11 +29,6 @@ mkdir ${MODEL_DIR}/OUTPUT
 mkdir ${MODEL_DIR}/RESTART
 mkdir ${MODEL_DIR}/history
 mkdir ${MODEL_DIR}/modulefiles
-
-ATM_RES='C185'
-CASE_NAME='custom'
-
-FIX_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/fix_files"
 
 cp -P ${PREP_DIR}/intercom/* ${MODEL_DIR}/INPUT/.
 cp -P ${PREP_DIR}/config_files/${CASE_NAME}/* ${MODEL_DIR}/.

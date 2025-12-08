@@ -35,7 +35,7 @@ done
 
 setup() {
     # Change config directory to run case
-    CONFIG_DIR="./config_files/2020-08-27-03_6HR"
+    CONFIG_DIR="./config_files/$CASE_NAME"
     NAMELIST_FILE="$CONFIG_DIR/config.in"
     
     module purge

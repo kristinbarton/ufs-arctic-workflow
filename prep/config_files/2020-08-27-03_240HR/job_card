@@ -5,15 +5,15 @@
 #SBATCH --qos=batch
 #SBATCH --nodes=6
 #SBATCH --ntasks-per-node=40
-#SBATCH --time=30
-#SBATCH --job-name="ufs-arctic"
+#SBATCH --time=3:00:00
+#SBATCH --job-name="Arctic-2020-08-27-03_240HR"
 
 set -eux
 date_s_start=$(date +%s)
 echo -n "${date_s_start}," > job_timestamp.txt
 
 set +x
-export MACHINE_ID=hera
+export MACHINE_ID=ursa
 source ./module-setup.sh
 module use "${PWD}/modulefiles"
 module load modules.fv3

@@ -4,13 +4,13 @@
     year_init           = 2020
     month_init          = 08
     day_init            = 27
-    sec_init            = 10800
+    sec_init            = 10800 
     dt                  = 180
     npt                 = 999
     ndtd                = 1
     runtype             = 'initial'
     runid               = 'unknown'
-    ice_ic              = 'INPUT/replay_ice.arctic_grid.2020082700.nc'
+    ice_ic              = 'INPUT/replay_ice.arctic_grid.2020-08-27-00-10800.nc'
     restart             = .true.
     restart_ext         = .false.
     use_restart_time    = .false.
@@ -27,7 +27,7 @@
     restart_file        = 'iced'
     pointer_file        = './ice.restart_file'
     dumpfreq            = 'h'
-    dumpfreq_n          = 1
+    dumpfreq_n          = 24
     dump_last           = .false.
     bfbflag             = 'off'
     diagfreq            = 120
@@ -48,7 +48,7 @@
     history_deflate     = 0
     history_precision   = 4
     histfreq            = 'm','d','h','1','x'
-    histfreq_n          = 0, 0, 1, 0, 0
+    histfreq_n          = 0, 0, 3, 0, 0
     hist_avg            = .true.
     history_dir         = './history/'
     history_file        = 'iceh'
@@ -61,8 +61,8 @@
 &grid_nml
     grid_format  = 'nc'
     grid_type    = 'regional'
-    grid_file    = 'grid_cice_NEMS_mxarctic.nc'
-    kmt_file     = 'kmtu_cice_NEMS_mxarctic.nc'
+    grid_file    = 'INPUT/grid_cice_NEMS_mxarctic.nc'
+    kmt_file     = 'INPUT/kmtu_cice_NEMS_mxarctic.nc'
     kcatbound    = 0
     ncat         = 5
     nfsd         = 1

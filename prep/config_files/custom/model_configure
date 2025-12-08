@@ -4,7 +4,7 @@ start_day:               27
 start_hour:              3
 start_minute:            0
 start_second:            0
-nhours_fcst:             240
+nhours_fcst:             6
 dt_atmos:                180
 restart_interval:        240
 
