@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH -e err
 #SBATCH -o out
-#SBATCH --account=ufs-artic
+#SBATCH --account=SACCT
 #SBATCH --qos=batch
 #SBATCH --nodes=6
 #SBATCH --ntasks-per-node=40
-#SBATCH --time=30:00
-#SBATCH --job-name="custom-arctic-case"
+#SBATCH --time=3:00:00
+#SBATCH --job-name="YEAR-MONTH-DAY_NHRSHR"
 
 set -eux
 date_s_start=$(date +%s)

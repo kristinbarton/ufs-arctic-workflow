@@ -36,7 +36,7 @@ done
 setup() {
     # Change config directory to run case
     CONFIG_DIR="./config_files/$CASE_NAME"
-    NAMELIST_FILE="$CONFIG_DIR/config.in"
+    NAMELIST_FILE="./config_files/config.in"
     
     module purge
     module use /contrib/spack-stack/spack-stack-1.9.3/envs/ue-oneapi-2024.2.1/install/modulefiles/Core
