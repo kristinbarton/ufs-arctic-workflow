@@ -4,9 +4,9 @@
 export MAIN_DIR="$(pwd)/../" # Top level directory
 export RUN_DIR="$(pwd)/" # Current run directory
 
-export CDATE=2020082700
-export CDATEprior=2020082600
-export NHRS=240 # Total number of forecast hours
+export CDATE=2020070900
+export CDATEprior=2020070800
+export NHRS=24 # Total number of forecast hours
 
 export SACCT="ufs-artic"
 export NLN="ln -s"
@@ -19,7 +19,7 @@ export OCN_DST_GRID_NAME="ARC12"
 export OCN_CASE="ARC12"
 export OCN_SRC_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_SRC_GRID_NAME}/"
 export OCN_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${OCN_DST_GRID_NAME}/input_files/"
-export OCN_SRC_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
+export OCN_SRC_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/${CDATE}/ics/"
 export OCN_SCRIPT_DIR="${MAIN_DIR}/workflow/ocn"
 export OCN_RUN_DIR="${RUN_DIR}/ocn"
 export OCNINTYPE='gefs' # Options: rtofs or gefs 
@@ -73,7 +73,7 @@ export ICEINTYPE='gefs' # Options: rtofs or gefs
 
 export ICE_SRC_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${ICE_SRC_GRID_NAME}/"
 export ICE_DST_GRID_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files/${ICE_DST_GRID_NAME}/input_files/"
-export ICE_INPUT_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700/ics/"
+export ICE_INPUT_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/${CDATE}/ics/"
 export ICE_SCRIPT_DIR="${MAIN_DIR}/workflow/ice"
 export ICE_RUN_DIR="${RUN_DIR}/ice"
 export ICE_SRC_FILE="Ct.mx025_SCRIP_masked.nc"
@@ -89,7 +89,7 @@ export ATM_SCRIPT_DIR="${MAIN_DIR}/workflow/atm"
 export ATM_RUN_DIR="${RUN_DIR}/atm"
 export FIX_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/mesh_files"
 export ATM_CASE="C185"
-export ATM_DATA_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/2020082700"
+export ATM_DATA_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/input_data/GEFSv13-reforecasts/${CDATE}"
 export ATM_TILE=7
 export ATM_LEVS=128
 export ATM_REGIONAL=1

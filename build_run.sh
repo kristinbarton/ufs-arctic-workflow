@@ -1,25 +1,24 @@
-export CASE_NAME='2020-08-27-03_240HR'
+export CASE_NAME='2020-07-04_240HR'
 SYSTEM="ursa"
 COMPILER="intelllvm"
 ATM_RES='C185'
 FIX_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/fix_files"
 RUN_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/stmp/test_runs"
-export ACCT='ufs-artic'
 
 TOP_DIR=$(pwd)
 UFS_DIR=${TOP_DIR}/ufs-weather-model
 cd ${UFS_DIR}/build
-#make clean
+make clean
 cd ${UFS_DIR}
 
-#module purge
-#module use modulefiles
-#module load ufs_${SYSTEM}.${COMPILER}.lua
-#CMAKE_FLAGS="-DAPP=S2S -DREGIONAL_MOM6=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1,FV3_HAFS_v1_gfdlmp_tedmf_nonsst" ./build.sh
+module purge
+module use modulefiles
+module load ufs_${SYSTEM}.${COMPILER}.lua
+CMAKE_FLAGS="-DAPP=S2S -DREGIONAL_MOM6=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1" ./build.sh
 
 PREP_DIR=${TOP_DIR}/prep
 cd ${PREP_DIR}
-#./run_prep.sh --clean --all
+./run_prep.sh --clean --all
 cd ${TOP_DIR}
 
 base=${RUN_DIR}/${CASE_NAME}

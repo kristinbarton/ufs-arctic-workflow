@@ -5,8 +5,8 @@
 #SBATCH --qos=batch
 #SBATCH --nodes=6
 #SBATCH --ntasks-per-node=40
-#SBATCH --time=3:00:00
-#SBATCH --job-name="Arctic-2020-08-27-03_240HR"
+#SBATCH --time=30:00
+#SBATCH --job-name="2020-02-27_24HR"
 
 set -eux
 date_s_start=$(date +%s)
