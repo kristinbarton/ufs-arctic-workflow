@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x -o pipefail
+set -e -o pipefail
 
 show_help() {
     cat << EOF

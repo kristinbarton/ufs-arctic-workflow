@@ -158,7 +158,6 @@ class _Remapper3DScalar(_RemapperBase):
         __, __, ny, nx = np.shape(self.remapped)
 
         with Dataset(out_file, 'a', format='NETCDF4') as ds:
-            print(f"Forecast iter is {forecast_iter}")
             if (forecast_iter == 0): # First timestep
                 if 'yh' not in ds.dimensions:
                     ds.createDimension('yh', ny)

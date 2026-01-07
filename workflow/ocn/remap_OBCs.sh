@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x -o pipefail
+set -e -o pipefail
 
 ###
 # Script Name: remap_OBCs.sh
@@ -61,7 +61,7 @@ echo "Calling remapping script for U-V vectors"
 start=1
 end=4
 for i in $(seq -f "%03g" $start $end); do
-    echo "Interpolating ${i}"
+    echo "Interpolating Boundary ${i}"
     WGT_FILE_PATH="${WGT_FILE_PATH_BASE}${i}${FILE_TAIL}"
     OUT_FILE_PATH="${OUT_FILE_PATH_BASE}${i}${FILE_TAIL}"
     DST_ANG_FILE_PATH="${DST_ANG_FILE_PATH_BASE}${i}${FILE_TAIL}"
@@ -89,7 +89,7 @@ echo ""
 
 echo "Calling remapping script for Temperature Variable"
 for i in $(seq -f "%03g" $start $end); do
-    echo "Interpolating ${i}"
+    echo "Interpolating Boundary ${i}"
     WGT_FILE_PATH="${WGT_FILE_PATH_BASE}${i}${FILE_TAIL}"
     OUT_FILE_PATH="${OUT_FILE_PATH_BASE}${i}${FILE_TAIL}"
     ${APRUNS} python rtofs_to_mom6.py \
@@ -110,7 +110,7 @@ echo ""
 
 echo "Calling remapping script for Salinity Variable"
 for i in $(seq -f "%03g" $start $end); do
-    echo "Interpolating ${i}"
+    echo "Interpolating Boundary ${i}"
     WGT_FILE_PATH="${WGT_FILE_PATH_BASE}${i}${FILE_TAIL}"
     OUT_FILE_PATH="${OUT_FILE_PATH_BASE}${i}${FILE_TAIL}"
     ${APRUNS} python rtofs_to_mom6.py \
@@ -131,7 +131,7 @@ echo ""
 
 echo "Calling remapping script for SSH Variable"
 for i in $(seq -f "%03g" $start $end); do
-    echo "Interpolating ${i}"
+    echo "Interpolating Boundary ${i}"
     WGT_FILE_PATH="${WGT_FILE_PATH_BASE}${i}${FILE_TAIL}"
     OUT_FILE_PATH="${OUT_FILE_PATH_BASE}${i}${FILE_TAIL}"
 
@@ -187,4 +187,5 @@ for i in $(seq -f "%03g" $start $end); do
 
     rm tmp.nc
 done
+echo ""
 

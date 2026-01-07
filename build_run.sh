@@ -2,14 +2,16 @@
 # User-adjusted parameters          #
 # ================================= #
 
+set -e -o pipefail
+
 # Current available dates are:
 # 2019/10/28, 2020/02/27, 2020/07/02, 2020/07/09, 2020/08/27
-export CDATE=20200227 #YYYYMMDD
+export CDATE=20191028 #YYYYMMDD
 export NHRS=3 # Max run length is 240 Hours
 export SACCT="ufs-artic"
 export SYSTEM="ursa"
 export COMPILER="intelllvm"
-export RUN_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/stmp/test_runs" 
+export RUN_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/stmp/test_runs/test_build_run_script" 
 
 # ================================= #
 # Below does not need to be changed #
@@ -22,25 +24,28 @@ TOP_DIR=$(pwd)
 # Compile model
 UFS_DIR=${TOP_DIR}/ufs-weather-model
 compile() {
-    force="$1"
-    if [ "$force" == "true" ] || [ ! -f "${UFS_DIR}/build/ufs_model" ]; then
+    if [ ! -f "${UFS_DIR}/build/ufs_model" ]; then
+        echo "Compiling UFS"
         cd ${UFS_DIR}/build
         make clean
         cd ${UFS_DIR}
         module use modulefiles
         module load ufs_${SYSTEM}.${COMPILER}.lua
-        CMAKE_FLAGS="-DDEBUG=OFF -DAPP=S2S -DREGIONAL_MOM6=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1" ./build.sh
+        CMAKE_FLAGS="-DDEBUG=ON -DAPP=S2S -DREGIONAL_MOM6=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1" ./build.sh
+        echo "Compilation Complete"
     else
-        echo "Executable exists, skipping compile."
+        echo "Skipping compile; UFS executable exists: ${UFS_DIR}/build/ufs_model"
     fi
 }
 
 # Run initial condition prep
 PREP_DIR=${TOP_DIR}/prep
 prep() {
+    echo "Running input file prep script"
     cd ${PREP_DIR}
     ./run_prep.sh --clean --all
     cd ${TOP_DIR}
+    echo "Input File Generation Complete"
 }
 
 # Make a new run directory
@@ -55,28 +60,30 @@ setup() {
         MODEL_DIR="${base}_${count}"
         ((count++))
     done
-    
-    unlink ${TOP_DIR}/run
+   
+    if [ -e ${TOP_DIR}/run ]; then
+        unlink ${TOP_DIR}/run
+    fi
     ln -s ${MODEL_DIR} ${TOP_DIR}/run
     
     # Populate run directories
-    mkdir ${MODEL_DIR}
-    mkdir ${MODEL_DIR}/INPUT
-    mkdir ${MODEL_DIR}/OUTPUT
-    mkdir ${MODEL_DIR}/RESTART
-    mkdir ${MODEL_DIR}/history
-    mkdir ${MODEL_DIR}/modulefiles
+    mkdir -p ${MODEL_DIR}
+    mkdir -p ${MODEL_DIR}/INPUT
+    mkdir -p ${MODEL_DIR}/OUTPUT
+    mkdir -p ${MODEL_DIR}/RESTART
+    mkdir -p ${MODEL_DIR}/history
+    mkdir -p ${MODEL_DIR}/modulefiles
     
     # Populate INPUT directory
     cp -P ${PREP_DIR}/intercom/* ${MODEL_DIR}/INPUT/.
-    ln -s ${MODEL_DIR}/INPUT/gfs_data.tile7.nc ${MODEL_DIR}/INPUT/gfs_data.nc
-    ln -s ${MODEL_DIR}/INPUT/sfc_data.tile7.nc ${MODEL_DIR}/INPUT/sfc_data.nc
-    ln -s ${MODEL_DIR}/INPUT/gfs_bndy.tile7.000.nc ${MODEL_DIR}/INPUT/gfs.bndy.nc
+    ln -s gfs_data.tile7.nc ${MODEL_DIR}/INPUT/gfs_data.nc
+    ln -s sfc_data.tile7.nc ${MODEL_DIR}/INPUT/sfc_data.nc
+    ln -s gfs_bndy.tile7.000.nc ${MODEL_DIR}/INPUT/gfs.bndy.nc
     cp -P ${FIX_DIR}/datasets/${ATM_RES}/*.nc ${MODEL_DIR}/.
     cp -P ${FIX_DIR}/input_grid_files/atm/${ATM_RES}/* ${MODEL_DIR}/INPUT/.
     cp -P ${FIX_DIR}/input_grid_files/ocn/* ${MODEL_DIR}/INPUT/.
     cp -P ${FIX_DIR}/input_grid_files/ice/* ${MODEL_DIR}/INPUT/.
-    cp -P ${FIX_DIR}/datasets/* ${MODEL_DIR}/.
+    cp -P ${FIX_DIR}/datasets/run_dir/* ${MODEL_DIR}/.
     cp -P ${UFS_DIR}/modulefiles/ufs_${SYSTEM}.${COMPILER}.lua ${MODEL_DIR}/modulefiles/modules.fv3.lua
     cp -P ${UFS_DIR}/modulefiles/ufs_common.lua ${MODEL_DIR}/modulefiles/.
     cp -P ${UFS_DIR}/build/ufs_model ${MODEL_DIR}/fv3.exe
@@ -134,21 +141,28 @@ setup() {
     
     cd ${PREP_DIR}
     ./clean.sh
-    
+    echo " ===== "
+    echo ""
     echo "Model run directory built in ${MODEL_DIR}"
 }
 
+run_model() {
+    echo "Submitting model run"
+    cd ${TOP_DIR}/run
+    sbatch job_card
+}
+
 help() {
-    echo "Usage: $0 [--compile]"
+    echo "Usage: $0 [--norun]"
     exit 1
 }
 
 # Run logic
-force=false
+submit_job=true
 while [ $# -gt 0 ]; do
     case "$1" in
-        --compile)
-            force=true
+        --norun)
+            submit_job=false
             ;;
         *)
             echo "Unknown option: $1"
@@ -158,6 +172,12 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-compile ${force}
+compile
+echo ""
 prep
+echo ""
 setup
+echo ""
+if [[ "$submit_job" == true ]]; then
+    run_model
+fi

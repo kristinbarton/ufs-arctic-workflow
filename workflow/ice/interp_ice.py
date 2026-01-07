@@ -33,7 +33,7 @@ def main(args):
 
     # remove variables we don't need
     ds_in = xr.open_dataset(src_file) 
-    ds_in=ds_in.drop(['fsnow','iage','alvl','vlvl','apnd','hpnd','ipnd','dhs','ffrac'])
+    ds_in=ds_in.drop_vars(['fsnow','iage','alvl','vlvl','apnd','hpnd','ipnd','dhs','ffrac'])
 
     # rotate source vectors to N-S
     ang_ds = xr.open_dataset(src_angl)

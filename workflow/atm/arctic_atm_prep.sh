@@ -1,13 +1,14 @@
 #!/bin/sh
 
-set -e -x -o pipefail
+set -e -o pipefail
 
 module use ${UFSUTILS_DIR}/modulefiles
-module load build.${SYSTEM}.intelllvm.lua
+module load build.${SYSTEM}.intelllvm.lua 
 
 CHGRES_EXEC=${CHGRES_EXEC}
 
-echo $CHGRES_EXEC
+echo "Using chgres_cube in $CHGRES_EXEC"
+echo ""
 
 CDATE=${CDATE}
 cycle_year=$(echo $CDATE | cut -c 1-4)
@@ -42,6 +43,8 @@ wam_cold_start=.false.
 ###########################
 ##  Generating IC Files  ##
 ###########################
+
+echo "Generating atmosphere IC files"
 
 if [ $ATM_ICTYPE = "fv3_restart" ]; then
     mosaic_file_input_grid="${FIX_DIR}/${ATM_SRC_CASE}/${ATM_SRC_CASE}_mosaic.nc"
@@ -130,7 +133,8 @@ cat>./fort.41<<EOF
 /
 EOF
 
-${APRUNC} ${CHGRES_EXEC} 2>&1 | tee ./chgres_cube_lbc.log
+echo "Calling chgres_cube"
+${APRUNC} ${CHGRES_EXEC} 2>&1 | tee ./chgres_cube_lbc.log > /dev/null
 
 mv ${ATM_RUN_DIR}/gfs_ctrl.nc ${ATM_RUN_DIR}/intercom/gfs_ctrl.nc
 mv ${ATM_RUN_DIR}/gfs.bndy.nc ${ATM_RUN_DIR}/intercom/gfs_bndy.tile${ATM_TILE}.000.nc
@@ -142,6 +146,8 @@ echo "Atmosphere IC Generation Complete"
 ############################
 ##  Generating LBC Files  ##
 ############################
+
+echo "Generating atmosphere LBC files"
 
 FHRB=${ATM_NBDYINT}
 FHRE=${NHRS}
@@ -175,7 +181,7 @@ fi
 
 #### START LOOP #####
 while [ $FHR -le $FHRE ]; do
-echo "Processing LBC for forecast hour ${FHR}"
+#echo "Processing LBC for forecast hour ${FHR}"
 
 grib2_file_input_grid="gefs.t${cycle_hour}z.pgrb2_combined.0p25.f${FHR3}"
 
@@ -226,7 +232,8 @@ cat>./fort.41<<EOF
  /
 EOF
 
-${APRUNC} ${CHGRES_EXEC} 2>&1 | tee ./chgres_cube_lbc_${FHR3}.log
+echo "Calling chgres_cube"
+${APRUNC} ${CHGRES_EXEC} 2>&1 | tee ./chgres_cube_lbc_${FHR3}.log > /dev/null
 
 mv ${ATM_RUN_DIR}/gfs.bndy.nc ${ATM_RUN_DIR}/intercom/gfs_bndy.tile${ATM_TILE}.${FHR3}.nc
 

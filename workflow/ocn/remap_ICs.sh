@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e -x -o pipefail
+set -e -o pipefail
 
 ###
 # Script Name: remap_ICs.sh
@@ -71,7 +71,6 @@ ${APRUNS} python rtofs_to_mom6.py \
     --out_file ${OUT_FILE_PATH} \
     --dz_name ${DST_VRT_NAME} \
     --time_name ${TIME_VARNAME}
-echo ""
 
 echo "Calling remapping script for Temperature Variable"
 ${APRUNS} python rtofs_to_mom6.py \
@@ -82,7 +81,6 @@ ${APRUNS} python rtofs_to_mom6.py \
     --out_file ${OUT_FILE_PATH} \
     --dz_name ${DST_VRT_NAME} \
     --time_name ${TIME_VARNAME}
-echo ""
 
 echo "Calling remapping script for Salinity Variable"
 ${APRUNS} python rtofs_to_mom6.py \
@@ -93,7 +91,6 @@ ${APRUNS} python rtofs_to_mom6.py \
     --out_file ${OUT_FILE_PATH} \
     --dz_name ${DST_VRT_NAME} \
     --time_name ${TIME_VARNAME}
-echo ""
 
 echo "Calling remapping script for Thickness Variable"
 ${APRUNS} python rtofs_to_mom6.py \

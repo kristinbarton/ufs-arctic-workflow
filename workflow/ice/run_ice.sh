@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e -x -o pipefail
+set -e -o pipefail
 
 yyyy=${CDATE:0:4}
 mm=${CDATE:4:2}
@@ -21,6 +21,7 @@ export ICE_DST_ANG_FILE=${ICE_DST_ANG_FILE}
 METHOD="neareststod"
 
 # Generate weight files if they don't exit
+echo "Generating ice IC files"
 if [ ! -e ${ICE_WGT_FILE} ]; then
     echo "File ${ICE_WGT_FILE} does not exist. Creating file..."
     ${APRUNS} ESMF_RegridWeightGen -s ${ICE_SRC_FILE} -d ${ICE_DST_FILE} -w ${ICE_WGT_FILE} -m ${METHOD} --dst_loc center --netCDF4 --dst_regional --ignore_degenerate
@@ -33,3 +34,4 @@ python interp_ice.py \
     --msk_file  ${ICE_DST_FILE} \
     --dst_angl  ${ICE_DST_ANG_FILE} \
     --out_file  "${ICE_RUN_DIR}/intercom/replay_ice.arctic_grid.${yyyy}-${mm}-${dd}-${hh}-${sssss}.nc"
+echo "Ice IC file generation complete"

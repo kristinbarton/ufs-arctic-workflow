@@ -17,7 +17,7 @@ from modules import Remapper
 from modules import utilities 
 
 def main(args):
-    print(f"... Reading arguments ...")
+#    print(f"... Reading arguments ...")
 
     wgt_file = args.wgt_file
     vrt_file = args.vrt_file
@@ -51,7 +51,7 @@ def main(args):
     dst_ang_supergrid = args.dst_ang_supergrid or False
 
     # Initialize output file with vertical layer and time information
-    print(f"... Initializing output file ...")
+#    print(f"... Initializing output file ...")
     dz = utilities.read_variable_from_file(vrt_file, dz_name)
     times = utilities.read_variable_from_file(tme_file, time_name)
     utilities.initialize_file(dz, dz_name_out, times, time_name_out, out_file)
@@ -73,16 +73,16 @@ def main(args):
         dst_angle = None
 
     # Perform horizontal interpolation
-    print(f"... Interpolating ...")
+#    print(f"... Interpolating ...")
     var_remapper = Remapper(*variables, depth_name = 'Layer', src_angle=src_angle, dst_angle=dst_angle, 
                             src_ang_hgrid=src_ang_supergrid, dst_ang_hgrid=dst_ang_supergrid)
     var_remapper.remap_from_file(*wgt_file)
 
     # Append to file
-    print(f"... Writing to output file ...")
+#    print(f"... Writing to output file ...")
     var_remapper.write_to_file(out_file, dz_name_out, time_name_out, forecast_iter, *var_name_out)
 
-    print("Complete!")
+#    print("Complete!")
 
 
 if __name__=="__main__":

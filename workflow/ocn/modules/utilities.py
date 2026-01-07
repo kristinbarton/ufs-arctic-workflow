@@ -93,9 +93,9 @@ def initialize_file(dz, dz_name_out, times, time_name_out, out_file):
                 time_var.calendar = times.calendar
             else:
                 time_var.calendar = "julian"
-    else:
-        print(f"(Output file {out_file} already exists.)")
-        print(f"(Assuming dimensions are correct -- skipping dimension creation.)")
+#    else:
+#        print(f"(Output file {out_file} already exists.)")
+#        print(f"(Assuming dimensions are correct -- skipping dimension creation.)")
 
 
 ##########################

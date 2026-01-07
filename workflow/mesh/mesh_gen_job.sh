@@ -6,7 +6,7 @@
 #SBATCH --account=ufs-artic
 #SBATCH --time=05:00
 
-set -e
+set -e -o pipefail
 
 module purge
 
