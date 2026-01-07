@@ -1,8 +1,7 @@
+set -e -o pipefail
 # ================================= #
 # User-adjusted parameters          #
 # ================================= #
-
-set -e -o pipefail
 
 # Current available dates are:
 # 2019/10/28, 2020/02/27, 2020/07/02, 2020/07/09, 2020/08/27
@@ -11,7 +10,7 @@ export NHRS=3 # Max run length is 240 Hours
 export SACCT="ufs-artic"
 export SYSTEM="ursa"
 export COMPILER="intelllvm"
-export RUN_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/stmp/test_runs/test_build_run_script" 
+export RUN_DIR="/scratch4/BMC/${SACCT}/${USER}"
 
 # ================================= #
 # Below does not need to be changed #
