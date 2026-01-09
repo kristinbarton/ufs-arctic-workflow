@@ -7,10 +7,10 @@ set -e -o pipefail
 # 2019/10/28, 2020/02/27, 2020/07/02, 2020/07/09, 2020/08/27
 export CDATE=20200827 #YYYYMMDD
 export NHRS=240 # Max run length is 240 Hours
-export SACCT="ufs-artic"
-export SYSTEM="ursa"
-export COMPILER="intelllvm"
-export RUN_DIR="/scratch4/BMC/${SACCT}/${USER}"
+export SACCT="ufs-artic" # Job submission account
+export SYSTEM="ursa" # ursa, hera
+export COMPILER="intelllvm" # gnu, intel, intelllvm
+export RUN_DIR="/scratch4/BMC/${SACCT}/${USER}" # Location to create run directory
 
 # ================================= #
 # Below does not need to be changed #
