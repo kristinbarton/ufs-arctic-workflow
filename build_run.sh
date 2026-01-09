@@ -1,4 +1,6 @@
+#!/bin/bash
 set -e -o pipefail
+
 # ================================= #
 # User-adjusted parameters          #
 # ================================= #
