@@ -10,7 +10,7 @@ export NHRS=240 # Max run length is 240 Hours
 export SACCT="ufs-artic"
 export SYSTEM="ursa"
 export COMPILER="intelllvm"
-export RUN_DIR="/scratch4/BMC/${SACCT}/${USER}/stmp/test_runs/GUST_CONST"
+export RUN_DIR="/scratch4/BMC/${SACCT}/${USER}"
 
 # ================================= #
 # Below does not need to be changed #
@@ -25,8 +25,10 @@ UFS_DIR=${TOP_DIR}/ufs-weather-model
 compile() {
     if [ ! -f "${UFS_DIR}/build/ufs_model" ]; then
         echo "Compiling UFS"
-        cd ${UFS_DIR}/build
-        make clean
+        if [ -f "{UFS_DIR}/build" ]; then
+            cd ${UFS_DIR}/build
+            make clean
+        fi
         cd ${UFS_DIR}
         module use modulefiles
         module load ufs_${SYSTEM}.${COMPILER}.lua
