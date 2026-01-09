@@ -5,12 +5,12 @@ set -e -o pipefail
 
 # Current available dates are:
 # 2019/10/28, 2020/02/27, 2020/07/02, 2020/07/09, 2020/08/27
-export CDATE=20191028 #YYYYMMDD
-export NHRS=3 # Max run length is 240 Hours
+export CDATE=20200827 #YYYYMMDD
+export NHRS=240 # Max run length is 240 Hours
 export SACCT="ufs-artic"
 export SYSTEM="ursa"
 export COMPILER="intelllvm"
-export RUN_DIR="/scratch4/BMC/${SACCT}/${USER}"
+export RUN_DIR="/scratch4/BMC/${SACCT}/${USER}/stmp/test_runs/GUST_CONST"
 
 # ================================= #
 # Below does not need to be changed #
@@ -30,7 +30,7 @@ compile() {
         cd ${UFS_DIR}
         module use modulefiles
         module load ufs_${SYSTEM}.${COMPILER}.lua
-        CMAKE_FLAGS="-DDEBUG=ON -DAPP=S2S -DREGIONAL_MOM6=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1" ./build.sh
+        CMAKE_FLAGS="-DDEBUG=OFF -DAPP=S2S -DREGIONAL_MOM6=ON -DMOVING_NEST=OFF -DCCPP_SUITES=FV3_GFS_v17_coupled_p8_ugwpv1" ./build.sh
         echo "Compilation Complete"
     else
         echo "Skipping compile; UFS executable exists: ${UFS_DIR}/build/ufs_model"
