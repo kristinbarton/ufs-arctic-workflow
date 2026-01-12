@@ -2,21 +2,11 @@ UFS Arctic Workflow
 ===================
 The UFS-Arctic project aims to set up a regional coupled atmosphere-ocean-sea-ice Arctic forecasting configuration in the UFS framework. 
 
-Table of Contents
-=================
-- [Quick Start Guide](#quick-start-guide)
-  - [Ursa and Hera](#ursa-and-hera)
-- [More Guides](#more-guides)
-  - [Generating ESMF mesh from MOM6 mask file](#generating-esmf-mesh-from-mom6-mask-file)
-  - [Generating a MOM6 Mask File](#generating-a-mom6-mask-file)
-- [Notes on Running with CICE6](#notes-on-running-with-cice6)
-  - [Generating CICE6 grid files](#generating-cice6-grid-files)
-
 Quick Start Guide
-======
+=================
 
-Ursa and Hera
-------------------------------------
+Ursa 
+----
 1. Clone the workflow and then update submodules: `git submodule update --init --recursive`
 2. Open `build_run.sh` and adjust the test run start date, run length, account, system, compiler, and run directory as needed.
 3. Run the workflow: 
@@ -32,8 +22,16 @@ Ursa and Hera
     - 2020/08/27
 - The model can be run from 3 hrs to a maximum of 240 hrs.
 
-More Details
-======
+Table of Contents
+=================
+- [More Guides](#more-guides)
+  - [Generating ESMF mesh from MOM6 mask file](#generating-esmf-mesh-from-mom6-mask-file)
+  - [Generating a MOM6 Mask File](#generating-a-mom6-mask-file)
+- [Notes on Running with CICE6](#notes-on-running-with-cice6)
+  - [Generating CICE6 grid files](#generating-cice6-grid-files)
+
+More Guides
+===========
 
 Generating ESMF mesh from MOM6 mask file
 ----------------------------------------
