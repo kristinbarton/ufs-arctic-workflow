@@ -133,7 +133,6 @@ cat>./fort.41<<EOF
 /
 EOF
 
-echo "Calling chgres_cube"
 ${APRUNC} ${CHGRES_EXEC} 2>&1 | tee ./chgres_cube_lbc.log > /dev/null
 
 mv ${ATM_RUN_DIR}/gfs_ctrl.nc ${ATM_RUN_DIR}/intercom/gfs_ctrl.nc
@@ -181,7 +180,7 @@ fi
 
 #### START LOOP #####
 while [ $FHR -le $FHRE ]; do
-#echo "Processing LBC for forecast hour ${FHR}"
+echo "Generating LBC file for forecast hour ${FHR}"
 
 grib2_file_input_grid="gefs.t${cycle_hour}z.pgrb2_combined.0p25.f${FHR3}"
 
@@ -232,7 +231,6 @@ cat>./fort.41<<EOF
  /
 EOF
 
-echo "Calling chgres_cube"
 ${APRUNC} ${CHGRES_EXEC} 2>&1 | tee ./chgres_cube_lbc_${FHR3}.log > /dev/null
 
 mv ${ATM_RUN_DIR}/gfs.bndy.nc ${ATM_RUN_DIR}/intercom/gfs_bndy.tile${ATM_TILE}.${FHR3}.nc

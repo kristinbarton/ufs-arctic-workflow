@@ -1,14 +1,21 @@
 #!/bin/bash
 set -e -o pipefail
 
+# To run:
+#   1. Clone the workflow and then update submodules: `git submodule update --init --recursive`
+#   2. Open `build_run.sh` and adjust the test run start date, run length, account, system, compiler, and run directory as needed.
+#   3. Run the workflow:
+#     `./build.sh` to automatically submit the job after setup.
+#     `./build.sh --norun` to setup the run directoy without submitting the job.
+
 # ================================= #
 # User-adjusted parameters          #
 # ================================= #
 
 # Current available dates are:
 # 2019/10/28, 2020/02/27, 2020/07/02, 2020/07/09, 2020/08/27
-export CDATE=20200827 #YYYYMMDD
-export NHRS=240 # Max run length is 240 Hours
+export CDATE=20191028 #YYYYMMDD
+export NHRS=3 # Max run length is 240 Hours
 export SACCT="ufs-artic" # Job submission account
 export SYSTEM="ursa" # ursa, hera
 export COMPILER="intelllvm" # gnu, intel, intelllvm
