@@ -1,4 +1,4 @@
-For more information, see the [UFS-Arctic Wiki](https://github.com/NOAA-PSL/ufs-arctic-workflow/wiki/UFS%E2%80%90Arctic-Workflow-Wiki).
+For more information, see the [UFS-Arctic Wiki](https://github.com/NOAA-PSL/ufs-arctic-workflow/wiki).
 
 Quick Start Guide
 =================
