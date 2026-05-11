@@ -19,7 +19,7 @@ error_exit() {
 }
 
 required_vars=(
-    "CDATE" "APRUNS" "ICE_RUN_DIR" "ICE_SRC_FILE"
+    "CDATE" "SRUN_n1" "ICE_RUN_DIR" "ICE_SRC_FILE"
     "ICE_DST_FILE" "ICE_WGT_FILE" "ICE_SRC_ANG_FILE" "ICE_DST_ANG_FILE"
 )
 for var in "${required_vars[@]}"; do
@@ -37,13 +37,14 @@ dd="${CDATE:6:2}"
 #sssss=$(( 10#$hh * 3600 ))
 sssss=10800
 
-METHOD="neareststod"
+method="neareststod"
 
 mkdir -p "${ICE_RUN_DIR}/intercom"
-OUT_FILE="${ICE_RUN_DIR}/intercom/replay_ice.arctic_grid.${yyyy}-${mm}-${dd}-${sssss}.nc"
-if [ -f "$OUT_FILE" ] && [ -s "$OUT_FILE" ]; then
+out_file="${ICE_RUN_DIR}/intercom/replay_ice.arctic_grid.${yyyy}-${mm}-${dd}-${sssss}.nc"
+
+if [ -f "$out_file" ] && [ -s "$out_file" ]; then
     log_info "Interpolated ice file already exists. Skipping..."
-    log_info "-> $OUT_FILE"
+    log_info "-> $out_file"
 
 else
     log_info "-> Generating ice initial condition files..."
@@ -51,14 +52,14 @@ else
     # ================================= #
     # Generate Weights                  #
     # ================================= #
-    if [ ! -e ${ICE_WGT_FILE} ]; then
+    if [ ! -e "${ICE_WGT_FILE}" ]; then
         log_info "-> Weight file ${ICE_WGT_FILE} does not exist. Creating via ESMF..."
     
-        ${APRUNS} ESMF_RegridWeightGen \
+        ${SRUN_n1} ESMF_RegridWeightGen \
             -s "${ICE_SRC_FILE}" \ 
             -d "${ICE_DST_FILE}" \
             -w "${ICE_WGT_FILE}" \
-            -m "${METHOD}" \
+            -m "${method}" \
             --dst_loc center \
             --netCDF4 \
             --dst_regional \
@@ -77,7 +78,7 @@ else
         --src_angl "${ICE_SRC_ANG_FILE}" \
         --msk_file "${ICE_DST_FILE}" \
         --dst_angl "${ICE_DST_ANG_FILE}" \
-        --out_file "${OUT_FILE}" || error_exit "run_ice_prep.py crashed."
+        --out_file "${out_file}" || error_exit "run_ice_prep.py crashed."
 fi
 
 log_info "-> Ice prep complete."

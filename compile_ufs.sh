@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=ufs_compile
-#SBATCH --partition=u1-compute
+#SBATCH --qos=batch
 #SBATCH --time=30:00
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
+#SBATCH --nodes=2
+#SBATCH --ntasks=2
 #SBATCH --output=slurm_compile_%j.log
 
 # ============================================================= #
@@ -23,14 +23,15 @@ log_warn() { echo -e "(Warn) $1"; }
 log_error() { echo -e "[ERROR] $1"; }
 error_exit() { log_error "$1"; exit 1; }
 
-SYSTEM="ursa"
-COMPILER="intelllvm"
+system="ursa"
+compiler="intelllvm"
+ufs_dir=""
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --system) SYSTEM="$2"; shift 2 ;;
-        --compiler) COMPILER="$2"; shift 2 ;;
-        --ufs-dir) UFS_DIR="$2"; shift 2 ;;
+        --system) system="$2"; shift 2 ;;
+        --compiler) compiler="$2"; shift 2 ;;
+        --ufs-dir) ufs_dir="$2"; shift 2 ;;
         -h|--help)
             grep "^#" "$0" | grep -v "^#SBATCH" | grep -v "^#!" # Prints USAGE block above
             exit 0
@@ -45,19 +46,18 @@ else
     export TOP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
 fi
 
-export UFS_DIR="${TOP_DIR}/ufs-weather-model"
-module_path="/contrib/spack-stack/spack-stack-1.9.3/envs/ue-oneapi-2024.2.1/install/modulefiles/Core"
+export ufs_dir="${ufs_dir:-${TOP_DIR}/ufs-weather-model}"
 
-log_info "Starting UFS Compilation process for System: $SYSTEM | Compiler: $COMPILER"
-log_info "Compiling in UFS directory: $UFS_DIR"
+log_info "Starting UFS Compilation process for System: $system | Compiler: $compiler"
+log_info "Compiling in UFS directory: $ufs_dir"
 
-[ -d "$UFS_DIR" ] || error_exit "UFS Model directory not found: $UFS_DIR Did you run git submodule update --init --recursive?"
+[ -d "$ufs_dir" ] || error_exit "UFS Model directory not found: $ufs_dir Did you run git submodule update --init --recursive?"
 
 # Compile
 (
-    cd "${UFS_DIR}"
+    cd "${ufs_dir}"
     module use modulefiles || error_exit "Failed to find modulefiles."
-    module load "ufs_${SYSTEM}.${COMPILER}.lua" || error_exit "Failed to load UFS module."
+    module load "ufs_${system}.${compiler}.lua" || error_exit "Failed to load UFS module."
     
     if [ -d "build" ]; then
         log_warn "Existing build directory found. Cleaning..."
@@ -70,20 +70,20 @@ log_info "Compiling in UFS directory: $UFS_DIR"
 
     # Generate Provenance Metadata
     log_info "Generating build metadata..."
-    META_FILE="${UFS_DIR}/build/build_metadata.txt"
-    echo "========================================" > "$META_FILE"
-    echo "UFS Build" >> "$META_FILE"
-    echo "Build Date: $(date)" >> "$META_FILE"
-    echo "System: ${SYSTEM}" >> "$META_FILE"
-    echo "Compiler: ${COMPILER}" >> "$META_FILE"
-    echo "CMake Flags: ${CMAKE_FLAGS}" >> "$META_FILE"
+    meta_file="${ufs_dir}/build/build_metadata.txt"
+    echo "========================================" > "$meta_file"
+    echo "UFS Build" >> "$meta_file"
+    echo "Build Date: $(date)" >> "$meta_file"
+    echo "System: ${system}" >> "$meta_file"
+    echo "Compiler: ${compiler}" >> "$meta_file"
+    echo "CMake Flags: ${CMAKE_FLAGS}" >> "$meta_file"
     
-    if [ -d "${UFS_DIR}/.git" ]; then
-        echo "Git Branch: $(git -C "${UFS_DIR}" rev-parse --abbrev-ref HEAD)" >> "$META_FILE"
-        echo "Git Hash: $(git -C "${UFS_DIR}" rev-parse HEAD)" >> "$META_FILE"
+    if [ -d "${ufs_dir}/.git" ]; then
+        echo "Git Branch: $(git -C "${ufs_dir}" rev-parse --abbrev-ref HEAD)" >> "$meta_file"
+        echo "Git Hash: $(git -C "${ufs_dir}" rev-parse HEAD)" >> "$meta_file"
     fi
-    echo "========================================" >> "$META_FILE"
+    echo "========================================" >> "$meta_file"
 )
 
-log_info "Compilation complete. Executable is ready at: ${UFS_DIR}/build/ufs_model"
+log_info "Compilation complete. Executable is ready at: ${ufs_dir}/build/ufs_model"
 

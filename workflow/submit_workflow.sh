@@ -30,15 +30,15 @@ export NHRS=""
 export SACCT="$SLURM_JOB_ACCOUNT"
 export ATM_RES=""
 
-RUN_DIR=""
-JOB_NAME=""
+run_dir=""
+job_name=""
 
 export SYSTEM="ursa"
-export COMPILER="intelllvm"
-export UFS_DIR=""
+compiler="intelllvm"
+ufs_dir=""
 
-RUN_STEP="all"
-SUBMIT_JOB=true
+run_step="all"
+submit_job=true
 
 help() {
     echo "Usage: $0 [OPTIONS]"
@@ -71,13 +71,13 @@ while [[ $# -gt 0 ]]; do
         --date) export CDATE="$2"; shift 2 ;;
         --hours) export NHRS="$2"; shift 2 ;;
         --res) export ATM_RES="$2"; shift 2 ;;
-        --run-dir) RUN_DIR="$2"; shift 2 ;;
-        --job-name) JOB_NAME="$2"; shift 2 ;;
+        --run-dir) run_dir="$2"; shift 2 ;;
+        --job-name) job_name="$2"; shift 2 ;;
         --system) export SYSTEM="$2"; shift 2 ;;
-        --compiler) export COMPILER="$2"; shift 2 ;;
-        --ufs-dir) export UFS_DIR="$2"; shift 2 ;;
-        --step) RUN_STEP="$2"; shift 2 ;;
-        --norun) SUBMIT_JOB=false; shift 1 ;;
+        --compiler) compiler="$2"; shift 2 ;;
+        --ufs-dir) ufs_dir="$2"; shift 2 ;;
+        --step) run_step="$2"; shift 2 ;;
+        --norun) submit_job=false; shift 1 ;;
         -h|--help) help ;;
         *) echo "Error: Unknown option '$1'. Use -h or --help for usage." >&2; exit ;;
     esac
@@ -88,12 +88,12 @@ if [[ -z "$CDATE" || -z "$NHRS" || -z "$ATM_RES" ]]; then
     error_exit "Missing required arguments: --date, --hours, --account, and --res are required. Use --help for more information"
 fi
 
-if [[ -z "$RUN_DIR" ]]; then
-    RUN_DIR="/scratch4/BMC/${SACCT}/${USER}/stmp"
+if [[ -z "$run_dir" ]]; then
+    run_dir="/scratch4/BMC/${SACCT}/${USER}/stmp"
 fi
 
-if [[ -z "$JOB_NAME" ]]; then
-    JOB_NAME="${ATM_RES}_${CDATE}_${NHRS}HRS"
+if [[ -z "$job_name" ]]; then
+    job_name="${ATM_RES}_${CDATE}_${NHRS}HRS"
 fi
 
 # ================================= #
@@ -113,9 +113,14 @@ fi
 
 [ -d "$TOP_DIR" ] || error_exit "Top directory not found: $TOP_DIR"
 
+# Set ufs_dir if not provided
+if [[ -z "$ufs_dir" ]]; then
+    ufs_dir="$TOP_DIR/ufs-weather-model/"
+fi
+
 export FIX_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/fix_files"
 export CONFIG_DIR="${TOP_DIR}/config"
-export MODEL_DIR="${RUN_DIR}/${JOB_NAME}"
+export MODEL_DIR="${run_dir}/${job_name}"
 export STATUS_DIR="${MODEL_DIR}/.status"
 
 conda_env="/scratch4/BMC/ufs-artic/Kristin.Barton/envs/ufs-arctic"
@@ -129,11 +134,11 @@ module_path="/contrib/spack-stack/spack-stack-1.9.3/envs/ue-oneapi-2024.2.1/inst
 # Helper function for rendering config files 
 render_template() {
     if [[ "$ATM_RES" == "C185" ]]; then
-        NPX=156
-        NPY=126
+        npx=156
+        npy=126
     elif [[ "$ATM_RES" == "C918" ]]; then
-        NPX=726
-        NPY=576
+        npx=726
+        npy=576
     fi
 
     local src="$1"
@@ -146,8 +151,8 @@ render_template() {
         -e "s|DAY|${DAY}|g" \
         -e "s|NHRS|${NHRS}|g" \
         -e "s|SACCT|${SACCT}|g" \
-        -e "s|NPX|${NPX}|g" \
-        -e "s|NPY|${NPY}|g" \
+        -e "s|NPX|${npx}|g" \
+        -e "s|NPY|${npy}|g" \
         -e "s|CRES|${ATM_RES}|g" \
         "${src}" > "${dest}" || error_exit "Failed to render template: $src"
 }
@@ -183,14 +188,14 @@ setup() {
     cp -P "${FIX_DIR}/input_grid_files/ice/"* "${MODEL_DIR}/INPUT/"
     cp -P "${FIX_DIR}/datasets/run_dir/"* "${MODEL_DIR}/"
 
-    cp -P "${UFS_DIR}/modulefiles/ufs_${SYSTEM}.${COMPILER}.lua" "${MODEL_DIR}/modulefiles/modules.fv3.lua"
-    cp -P "${UFS_DIR}/modulefiles/ufs_common.lua" "${MODEL_DIR}/modulefiles/"
-    ln -sf "${UFS_DIR}/build/ufs_model" "${MODEL_DIR}/fv3.exe"
+    cp -P "${ufs_dir}/modulefiles/ufs_${SYSTEM}.${compiler}.lua" "${MODEL_DIR}/modulefiles/modules.fv3.lua"
+    cp -P "${ufs_dir}/modulefiles/ufs_common.lua" "${MODEL_DIR}/modulefiles/"
+    ln -sf "${ufs_dir}/build/ufs_model" "${MODEL_DIR}/fv3.exe"
 
-    if [ -f "${UFS_DIR}/build/build_metadata.txt" ]; then
-        cp -P "${UFS_DIR}/build/build_metadata.txt" "${MODEL_DIR}/ufs_build_metadata.txt"
+    if [ -f "${ufs_dir}/build/build_metadata.txt" ]; then
+        cp -P "${ufs_dir}/build/build_metadata.txt" "${MODEL_DIR}/ufs_build_metadata.txt"
     else
-        echo "Source Executable: ${UFS_DIR}/build/ufs_model" > "${MODEL_DIR}/fv3_build_metadata.txt"
+        echo "Source Executable: ${ufs_dir}/build/ufs_model" > "${MODEL_DIR}/fv3_build_metadata.txt"
         echo "Note: Provided executable directory did not contain build metadata." >> "${MODEL_DIR}/fv3_build_metadata.txt"
     fi
 
@@ -229,8 +234,8 @@ prep_init() {
     export PREP_DIR="${MODEL_DIR}/PREP"
     mkdir -p "${PREP_DIR}/intercom"
     mkdir -p "${MODEL_DIR}/INPUT"
-    local NAMELIST_FILE="${CONFIG_DIR}/config.in"
-    source "$NAMELIST_FILE" || error_exit "Namelist file not found: $NAMELIST_FILE"
+    local config_file="${CONFIG_DIR}/config.in"
+    source "$config_file" || error_exit "Namelist file not found: $config_file"
 }
 
 prep_ocn() {
@@ -308,7 +313,7 @@ fi
 
 mkdir -p "$STATUS_DIR"
 
-if [[ "$RUN_STEP" == "all" || "$RUN_STEP" == "setup" ]]; then
+if [[ "$run_step" == "all" || "$run_step" == "setup" ]]; then
     if [ ! -f "${STATUS_DIR}/setup.done" ]; then
         setup
         touch "${STATUS_DIR}/setup.done"
@@ -317,13 +322,13 @@ if [[ "$RUN_STEP" == "all" || "$RUN_STEP" == "setup" ]]; then
     fi
 fi
 
-if [[ "$RUN_STEP" == "all" || "$RUN_STEP" == "prep" || "$RUN_STEP" == "prep_ocn" || "$RUN_STEP" == "prep_ice" || "$RUN_STEP" == "prep_atm" ]]; then prep_init; fi
-if [[ "$RUN_STEP" == "all" || "$RUN_STEP" == "prep" || "$RUN_STEP" == "prep_ocn" ]]; then prep_ocn; fi
-if [[ "$RUN_STEP" == "all" || "$RUN_STEP" == "prep" || "$RUN_STEP" == "prep_ice" ]]; then prep_ice; fi
-if [[ "$RUN_STEP" == "all" || "$RUN_STEP" == "prep" || "$RUN_STEP" == "prep_atm" ]]; then prep_atm; fi
+if [[ "$run_step" == "all" || "$run_step" == "prep" || "$run_step" == "prep_ocn" || "$run_step" == "prep_ice" || "$run_step" == "prep_atm" ]]; then prep_init; fi
+if [[ "$run_step" == "all" || "$run_step" == "prep" || "$run_step" == "prep_ocn" ]]; then prep_ocn; fi
+if [[ "$run_step" == "all" || "$run_step" == "prep" || "$run_step" == "prep_ice" ]]; then prep_ice; fi
+if [[ "$run_step" == "all" || "$run_step" == "prep" || "$run_step" == "prep_atm" ]]; then prep_atm; fi
 
-if [[ "$RUN_STEP" == "all" || "$RUN_STEP" == "run" ]]; then
-    if [[ "$SUBMIT_JOB" == true ]]; then
+if [[ "$run_step" == "all" || "$run_step" == "run" ]]; then
+    if [[ "$submit_job" == true ]]; then
         run_model
     else
         log_warn "Skipping job submission because --norun was specified."
