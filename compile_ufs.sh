@@ -4,6 +4,7 @@
 #SBATCH --time=30:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
 #SBATCH --output=slurm_compile_%j.log
 
 # ============================================================= #
