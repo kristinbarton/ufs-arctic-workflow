@@ -115,7 +115,12 @@ fi
 
 # Set ufs_dir if not provided
 if [[ -z "$UFS_DIR" ]]; then
-    ufs_dir="$TOP_DIR/ufs-weather-model/"
+    UFS_DIR="$TOP_DIR/ufs-weather-model/"
+fi
+
+# Check executable exists
+if [[ ! -e "$UFS_DIR/build/ufs_model" ]]; then
+    error_exit "Missing executable: $UFS_DIR/build/ufs_model"
 fi
 
 export FIX_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/fix_files"
