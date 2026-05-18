@@ -113,6 +113,16 @@ fi
 
 [ -d "$TOP_DIR" ] || error_exit "Top directory not found: $TOP_DIR"
 
+# Set ufs_dir if not provided
+if [[ -z "$UFS_DIR" ]]; then
+    UFS_DIR="$TOP_DIR/ufs-weather-model/"
+fi
+
+# Check executable exists
+if [[ ! -e "$UFS_DIR/build/ufs_model" ]]; then
+    error_exit "Missing executable: $UFS_DIR/build/ufs_model"
+fi
+
 export FIX_DIR="/scratch4/BMC/ufs-artic/Kristin.Barton/files/ufs_arctic_development/fix_files"
 export CONFIG_DIR="${TOP_DIR}/config"
 export MODEL_DIR="${RUN_DIR}/${JOB_NAME}"
