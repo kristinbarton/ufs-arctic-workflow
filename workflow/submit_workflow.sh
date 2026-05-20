@@ -189,8 +189,8 @@ setup() {
 
     cp -P "${FIX_DIR}/mesh_files/${ATM_RES}/sfc/"*.nc "${MODEL_DIR}/"
     cp -P "${FIX_DIR}/mesh_files/${ATM_RES}/"*.nc "${MODEL_DIR}/INPUT/"
-    cp -P "${FIX_DIR}/input_grid_files/ocn/"*.nc "${MODEL_DIR}/INPUT/"
-    cp -P "${FIX_DIR}/input_grid_files/ice/"*.nc "${MODEL_DIR}/INPUT/"
+    cp -L "${FIX_DIR}/input_grid_files/ocn/"*.nc "${MODEL_DIR}/INPUT/"
+    cp -L "${FIX_DIR}/input_grid_files/ice/"*.nc "${MODEL_DIR}/INPUT/"
     cp -P "${FIX_DIR}/datasets/run_dir/"* "${MODEL_DIR}/"
 
     cp -P "${UFS_DIR}/modulefiles/ufs_${SYSTEM}.${COMPILER}.lua" "${MODEL_DIR}/modulefiles/modules.fv3.lua"
